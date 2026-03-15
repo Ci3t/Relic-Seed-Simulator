@@ -923,12 +923,16 @@
       </div>
       <div class="team-summary" id="team-summary"></div>
       <div class="char-grid" id="char-grid"></div>
-      
+
       <!-- PAGINATION CONTROLS -->
-      <div id="char-pagination" style="margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: var(--mono); font-size: 11px;">
-        <button class="btn" id="prev-page" onclick="changePage(-1)" style="padding: 4px 10px; font-size: 10px;">&lt; PREV</button>
-        <span style="color: var(--text3)">PAGE <span id="current-page-val" style="color: var(--accent)">1</span> / <span id="total-pages-val">1</span></span>
-        <button class="btn" id="next-page" onclick="changePage(1)" style="padding: 4px 10px; font-size: 10px;">NEXT &gt;</button>
+      <div id="char-pagination"
+        style="margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: var(--mono); font-size: 11px;">
+        <button class="btn" id="prev-page" onclick="changePage(-1)" style="padding: 4px 10px; font-size: 10px;">&lt;
+          PREV</button>
+        <span style="color: var(--text3)">PAGE <span id="current-page-val" style="color: var(--accent)">1</span> / <span
+            id="total-pages-val">1</span></span>
+        <button class="btn" id="next-page" onclick="changePage(1)" style="padding: 4px 10px; font-size: 10px;">NEXT
+          &gt;</button>
       </div>
     </div>
 
@@ -938,17 +942,23 @@
       <div class="time-row" style="margin-bottom: 12px; gap: 20px;">
         <div style="display: flex; align-items: center; gap: 8px;">
           <label>SECONDS</label>
-          <input type="number" id="clear-time" min="1" max="999" step="1" value="90" oninput="syncToMinSec(); compute()">
+          <input type="number" id="clear-time" min="1" max="999" step="1" value="90"
+            oninput="syncToMinSec(); compute()">
         </div>
-        <div style="display: flex; align-items: center; gap: 8px; padding-left: 20px; border-left: 1px solid var(--border2);">
-          <span style="font-size: 11px; color: var(--text3); font-family: var(--mono); white-space: nowrap;">⚡ TRANSLATOR:</span>
-          <input type="number" id="t-min" placeholder="min" min="0" max="15" style="width: 55px;" oninput="translateTime()">
+        <div
+          style="display: flex; align-items: center; gap: 8px; padding-left: 20px; border-left: 1px solid var(--border2);">
+          <span style="font-size: 11px; color: var(--text3); font-family: var(--mono); white-space: nowrap;">⚡
+            TRANSLATOR:</span>
+          <input type="number" id="t-min" placeholder="min" min="0" max="15" style="width: 55px;"
+            oninput="translateTime()">
           <span style="font-size: 12px; color: var(--text3); font-family: var(--mono);">m</span>
-          <input type="number" id="t-sec" placeholder="sec" min="0" max="59" style="width: 55px;" oninput="translateTime()">
+          <input type="number" id="t-sec" placeholder="sec" min="0" max="59" style="width: 55px;"
+            oninput="translateTime()">
           <span style="font-size: 12px; color: var(--text3); font-family: var(--mono);">s</span>
         </div>
       </div>
-      <div class="slot-hint" style="margin-bottom: 10px;">Type exact seconds shown in game OR use the translator for [m + s] conversion</div>
+      <div class="slot-hint" style="margin-bottom: 10px;">Type exact seconds shown in game OR use the translator for [m
+        + s] conversion</div>
       <input type="text" class="notes-input" id="run-notes"
         placeholder="notes: weakness broke turn2 · 5* boots · double sustain...">
     </div>
@@ -1132,7 +1142,7 @@
       { id: 1406, name: 'Cipher', role: 'support', path: 'Hunt', elem: 'Quantum' },
       { id: 1407, name: 'Castorice', role: 'dps', path: 'Remem', elem: 'Quantum' },
       { id: 1408, name: 'Phainon', role: 'dps', path: 'Dest', elem: 'Physical' },
-      { id: 1409, name: 'Hyacine', role: 'dps', path: 'Remem', elem: 'Wind' },
+      { id: 1409, name: 'Hyacine', role: 'healer', path: 'Remem', elem: 'Wind' },
       { id: 1410, name: 'Hysilens', role: 'support', path: 'Nihil', elem: 'Physical' },
       { id: 1412, name: 'Cerydra', role: 'healer', path: 'Harm', elem: 'Wind' },
       { id: 1413, name: 'Evernight', role: 'dps', path: 'Remem', elem: 'Ice' },
@@ -1197,7 +1207,7 @@
     let avgTop4 = [];    // computed from relicData
     let logs = [];
     let dragSrc = null;
-    
+
     // pagination
     let currentPage = 1;
     const ITEMS_PER_PAGE = 36; // Approx 6 rows x 6 columns
@@ -1296,17 +1306,17 @@
         document.getElementById('char-pagination').style.display = 'none';
         return;
       }
-      
+
       const filtered = CHARS.filter(c => !q || c.name.toLowerCase().includes(q) || c.path.toLowerCase().includes(q) || c.elem.toLowerCase().includes(q));
-      
+
       // Pagination logic
       const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
       if (currentPage > totalPages) currentPage = totalPages;
       if (currentPage < 1) currentPage = 1;
-      
+
       const start = (currentPage - 1) * ITEMS_PER_PAGE;
       const paginated = filtered.slice(start, start + ITEMS_PER_PAGE);
-      
+
       document.getElementById('char-pagination').style.display = filtered.length > ITEMS_PER_PAGE ? 'flex' : 'none';
       document.getElementById('current-page-val').textContent = currentPage;
       document.getElementById('total-pages-val').textContent = totalPages;
