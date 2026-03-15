@@ -1052,7 +1052,7 @@
   <script>
     // ── DATA ─────────────────────────────────────────────────────────────────────
     const CHARS = [
-      // 10xx: Herta Space Station / Early
+      // 10xx: Herta Space Station / Early / Crossover
       { id: 1001, name: 'March 7th', role: 'sustain', path: 'Pres', elem: 'Ice' },
       { id: 1002, name: 'Dan Heng', role: 'dps', path: 'Hunt', elem: 'Wind' },
       { id: 1003, name: 'Himeko', role: 'dps', path: 'Erad', elem: 'Fire' },
@@ -1062,6 +1062,8 @@
       { id: 1008, name: 'Arlan', role: 'dps', path: 'Dest', elem: 'Lightning' },
       { id: 1009, name: 'Asta', role: 'support', path: 'Harm', elem: 'Fire' },
       { id: 1013, name: 'Herta', role: 'dps', path: 'Erad', elem: 'Ice' },
+      { id: 1014, name: 'Saber', role: 'dps', path: 'Dest', elem: 'Wind' },
+      { id: 1015, name: 'Archer', role: 'dps', path: 'Hunt', elem: 'Quantum' },
 
       // 11xx: Belobog
       { id: 1101, name: 'Bronya', role: 'support', path: 'Harm', elem: 'Wind' },
@@ -1077,7 +1079,7 @@
       { id: 1111, name: 'Luka', role: 'dps', path: 'Nihil', elem: 'Physical' },
       { id: 1112, name: 'Topaz & Numby', role: 'dps', path: 'Hunt', elem: 'Fire' },
 
-      // 12xx: Xianzhou Luofu / 1.x-2.x
+      // 12xx: Xianzhou Luofu
       { id: 1201, name: 'Qingque', role: 'dps', path: 'Erad', elem: 'Quantum' },
       { id: 1202, name: 'Tingyun', role: 'support', path: 'Harm', elem: 'Lightning' },
       { id: 1203, name: 'Luocha', role: 'sustain', path: 'Abund', elem: 'Imaginary' },
@@ -1095,14 +1097,12 @@
       { id: 1215, name: 'Hanya', role: 'support', path: 'Harm', elem: 'Physical' },
       { id: 1217, name: 'Huohuo', role: 'healer', path: 'Abund', elem: 'Wind' },
       { id: 1218, name: 'Jiaoqiu', role: 'support', path: 'Nihil', elem: 'Fire' },
-      { id: 1219, name: 'Evernight', role: 'dps', path: 'Remem', elem: 'Ice' },
       { id: 1220, name: 'Feixiao', role: 'dps', path: 'Hunt', elem: 'Wind' },
       { id: 1221, name: 'Yunli', role: 'dps', path: 'Dest', elem: 'Physical' },
       { id: 1222, name: 'Lingsha', role: 'sustain', path: 'Abund', elem: 'Fire' },
       { id: 1223, name: 'Moze', role: 'dps', path: 'Hunt', elem: 'Lightning' },
       { id: 1224, name: 'March 7th (Hunt)', role: 'dps', path: 'Hunt', elem: 'Imaginary' },
       { id: 1225, name: 'Fugue', role: 'support', path: 'Nihil', elem: 'Fire' },
-      { id: 1226, name: 'Tribbie', role: 'support', path: 'Harm', elem: 'Quantum' },
 
       // 13xx: Penacony / Late 2.x
       { id: 1301, name: 'Gallagher', role: 'sustain', path: 'Abund', elem: 'Fire' },
@@ -1121,22 +1121,27 @@
       { id: 1314, name: 'Jade', role: 'dps', path: 'Erad', elem: 'Quantum' },
       { id: 1315, name: 'Boothill', role: 'dps', path: 'Hunt', elem: 'Physical' },
       { id: 1317, name: 'Rappa', role: 'dps', path: 'Erad', elem: 'Imaginary' },
-      { id: 1319, name: 'Mr. Reca', role: 'support', path: 'Nihil', elem: 'Fire' },
+      { id: 1321, name: 'The Dahlia', role: 'dps', path: 'Nihil', elem: 'Fire' },
 
       // 14xx: Amphoreus / 3.x
       { id: 1401, name: 'The Herta', role: 'dps', path: 'Erad', elem: 'Ice' },
       { id: 1402, name: 'Aglaea', role: 'dps', path: 'Remem', elem: 'Lightning' },
-      { id: 1404, name: 'Mydei', role: 'dps', path: 'Dest', elem: 'Fire' },
+      { id: 1403, name: 'Tribbie', role: 'support', path: 'Harm', elem: 'Quantum' },
+      { id: 1404, name: 'Mydei', role: 'dps', path: 'Dest', elem: 'Imaginary' },
       { id: 1405, name: 'Anaxa', role: 'dps', path: 'Erad', elem: 'Wind' },
-      { id: 1406, name: 'Cipher', role: 'support', path: 'Hunt', elem: 'Fire' },
+      { id: 1406, name: 'Cipher', role: 'support', path: 'Hunt', elem: 'Quantum' },
       { id: 1407, name: 'Castorice', role: 'dps', path: 'Remem', elem: 'Quantum' },
       { id: 1408, name: 'Phainon', role: 'dps', path: 'Dest', elem: 'Physical' },
-      { id: 1412, name: 'Cerydra', role: 'healer', path: 'Abund', elem: 'Wind' },
-      { id: 1414, name: 'Dan Heng • PT', role: 'dps', path: 'Dest', elem: 'Imaginary' },
+      { id: 1409, name: 'Hyacine', role: 'dps', path: 'Remem', elem: 'Wind' },
+      { id: 1410, name: 'Hysilens', role: 'support', path: 'Nihil', elem: 'Physical' },
+      { id: 1412, name: 'Cerydra', role: 'healer', path: 'Harm', elem: 'Wind' },
+      { id: 1413, name: 'Evernight', role: 'dps', path: 'Remem', elem: 'Ice' },
+      { id: 1414, name: 'Dan Heng • PT', role: 'dps', path: 'Pres', elem: 'Physical' },
+      { id: 1415, name: 'Cyrene', role: 'dps', path: 'Remem', elem: 'Ice' },
 
       // 15xx: 4.0?
-      { id: 1501, name: 'Sparxie', role: 'support', path: 'Harm', elem: 'Fire' },
-      { id: 1502, name: 'Yao Guang', role: 'support', path: 'Remem', elem: 'Ice' },
+      { id: 1501, name: 'Sparxie', role: 'support', path: 'Elat', elem: 'Fire' },
+      { id: 1502, name: 'Yao Guang', role: 'support', path: 'Elat', elem: 'Physical' },
 
       // 8xxx: Trailblazer
       { id: 8001, name: 'TB (Dest/M)', role: 'dps', path: 'Dest', elem: 'Physical' },
