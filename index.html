@@ -151,7 +151,14 @@
 
     input[type=number] {
       -moz-appearance: textfield;
+      appearance: textfield;
       width: 80px;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
 
     .notes-input {
@@ -921,11 +928,20 @@
     <!-- TIME -->
     <div class="panel">
       <div class="panel-title">Clear Time &amp; Notes</div>
-      <div class="time-row">
-        <label>SECONDS</label>
-        <input type="number" id="clear-time" min="1" max="999" step="1" value="90" oninput="compute()">
-        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">type exact seconds shown in game</span>
+      <div class="time-row" style="margin-bottom: 12px; gap: 20px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <label>SECONDS</label>
+          <input type="number" id="clear-time" min="1" max="999" step="1" value="90" oninput="syncToMinSec(); compute()">
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; padding-left: 20px; border-left: 1px solid var(--border2);">
+          <span style="font-size: 11px; color: var(--text3); font-family: var(--mono); white-space: nowrap;">⚡ TRANSLATOR:</span>
+          <input type="number" id="t-min" placeholder="min" min="0" max="15" style="width: 55px;" oninput="translateTime()">
+          <span style="font-size: 12px; color: var(--text3); font-family: var(--mono);">m</span>
+          <input type="number" id="t-sec" placeholder="sec" min="0" max="59" style="width: 55px;" oninput="translateTime()">
+          <span style="font-size: 12px; color: var(--text3); font-family: var(--mono);">s</span>
+        </div>
       </div>
+      <div class="slot-hint" style="margin-bottom: 10px;">Type exact seconds shown in game OR use the translator for [m + s] conversion</div>
       <input type="text" class="notes-input" id="run-notes"
         placeholder="notes: weakness broke turn2 · 5* boots · double sustain...">
     </div>
@@ -1463,6 +1479,25 @@
     }
 
     function refresh() { renderSlots(); renderChars(); compute(); }
+
+    // ── TIME TRANSLATOR ──────────────────────────────────────────────────────────
+    function translateTime() {
+      const m = parseInt(document.getElementById('t-min').value) || 0;
+      const s = parseInt(document.getElementById('t-sec').value) || 0;
+      const total = (m * 60) + s;
+      if (total > 0) {
+        document.getElementById('clear-time').value = total;
+        compute();
+      }
+    }
+
+    function syncToMinSec() {
+      const total = parseInt(document.getElementById('clear-time').value) || 0;
+      if (total > 0) {
+        document.getElementById('t-min').value = Math.floor(total / 60);
+        document.getElementById('t-sec').value = total % 60;
+      }
+    }
 
     // ── LOG RUN ───────────────────────────────────────────────────────────────────
     function logRun() {
