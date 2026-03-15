@@ -918,11 +918,18 @@
       <div class="search-row">
         <input type="text" id="char-search"
           placeholder="Search name · path (Remem/Harm/Hunt...) · element (Ice/Wind/Quantum...)..."
-          oninput="renderChars()">
+          oninput="currentPage=1; renderChars()">
         <button class="btn btn-green" id="lock-btn" onclick="toggleLock()">Lock team</button>
       </div>
       <div class="team-summary" id="team-summary"></div>
       <div class="char-grid" id="char-grid"></div>
+      
+      <!-- PAGINATION CONTROLS -->
+      <div id="char-pagination" style="margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: var(--mono); font-size: 11px;">
+        <button class="btn" id="prev-page" onclick="changePage(-1)" style="padding: 4px 10px; font-size: 10px;">&lt; PREV</button>
+        <span style="color: var(--text3)">PAGE <span id="current-page-val" style="color: var(--accent)">1</span> / <span id="total-pages-val">1</span></span>
+        <button class="btn" id="next-page" onclick="changePage(1)" style="padding: 4px 10px; font-size: 10px;">NEXT &gt;</button>
+      </div>
     </div>
 
     <!-- TIME -->
@@ -1179,6 +1186,10 @@
     let avgTop4 = [];    // computed from relicData
     let logs = [];
     let dragSrc = null;
+    
+    // pagination
+    let currentPage = 1;
+    const ITEMS_PER_PAGE = 36; // Approx 6 rows x 6 columns
 
     // ── INIT ─────────────────────────────────────────────────────────────────────
     function init() {
@@ -1271,9 +1282,27 @@
       grid.innerHTML = '';
       if (teamLocked) {
         grid.innerHTML = '<div style="font-size:11px;color:var(--text3);font-family:var(--mono);padding:6px 0">Team locked — only change time/notes. Unlock to swap characters.</div>';
+        document.getElementById('char-pagination').style.display = 'none';
         return;
       }
-      CHARS.filter(c => !q || c.name.toLowerCase().includes(q) || c.path.toLowerCase().includes(q) || c.elem.toLowerCase().includes(q)).forEach(c => {
+      
+      const filtered = CHARS.filter(c => !q || c.name.toLowerCase().includes(q) || c.path.toLowerCase().includes(q) || c.elem.toLowerCase().includes(q));
+      
+      // Pagination logic
+      const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+      
+      const start = (currentPage - 1) * ITEMS_PER_PAGE;
+      const paginated = filtered.slice(start, start + ITEMS_PER_PAGE);
+      
+      document.getElementById('char-pagination').style.display = filtered.length > ITEMS_PER_PAGE ? 'flex' : 'none';
+      document.getElementById('current-page-val').textContent = currentPage;
+      document.getElementById('total-pages-val').textContent = totalPages;
+      document.getElementById('prev-page').disabled = currentPage === 1;
+      document.getElementById('next-page').disabled = currentPage === totalPages;
+
+      paginated.forEach(c => {
         const inTeam = team.some(t => t && t.id === c.id);
         const d = document.createElement('div');
         d.className = 'char-card' + (inTeam ? ' in-team' : '');
@@ -1291,6 +1320,11 @@
         }
         grid.appendChild(d);
       });
+    }
+
+    function changePage(delta) {
+      currentPage += delta;
+      renderChars();
     }
 
     // ── RELIC CARDS ───────────────────────────────────────────────────────────────
