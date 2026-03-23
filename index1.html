@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HSR Relic Seed Simulator v3</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600&display=swap');
+
+    :root {
+      --bg: #0a0c10;
+      --surface: #111418;
+      --surface2: #181c22;
+      --border: #252a32;
+      --border2: #2e3540;
+      --accent: #4fc3f7;
+      --gold: #ffd54f;
+      --green: #69f0ae;
+      --red: #ff6b6b;
+      --purple: #ce93d8;
+      --orange: #ffb74d;
+      --text: #e8eaf0;
+      --text2: #8a96a8;
+      --text3: #505866;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Exo 2', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+
+    .scanline {
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HEADER */
+    .header {
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .header h1 span {
+      color: var(--gold);
+    }
+
+    .header p {
+      font-size: 12px;
+      color: var(--text2);
+      margin-top: 4px;
+      font-family: var(--mono);
+    }
+
+    /* STATUS */
+    .status-bar {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      padding: 8px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      margin-bottom: 14px;
+    }
+
+    .sg {
+      color: var(--green);
+    }
+
+    .sc {
+      color: var(--accent);
+    }
+
+    /* PANEL */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+    }
+
+    .panel-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text2);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* FORMS */
+    select,
+    input[type=text],
+    input[type=number] {
+      padding: 7px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 5px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12px;
+      outline: none;
+    }
+
+    select {
+      width: 100%;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+      width: 80px;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .notes-input {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    /* CAVERN */
+    .cavern-sets {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+      margin-top: 6px;
+      min-height: 14px;
+    }
+
+    /* TEAM SLOTS */
+    .slots {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .slot {
+      border: 1.5px dashed var(--border2);
+      border-radius: 6px;
+      padding: 10px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .15s, background .15s, transform .1s;
+      min-height: 82px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .slot:hover {
+      border-color: var(--accent);
+    }
+
+    .slot.active {
+      border: 1.5px solid var(--accent);
+      background: rgba(79, 195, 247, .06);
+    }
+
+    .slot.filled {
+      border-style: solid;
+      border-color: var(--border2);
+      background: var(--surface2);
+    }
+
+    .slot.drag-over {
+      border-color: var(--gold) !important;
+      background: rgba(255, 213, 79, .08);
+      transform: scale(1.04);
+    }
+
+    .slot-num {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+    }
+
+    .slot-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .slot-meta {
+      font-size: 9px;
+      color: var(--accent);
+      font-family: var(--mono);
+      line-height: 1.4;
+    }
+
+    .slot-empty {
+      font-size: 11px;
+      color: var(--text3);
+    }
+
+    .slot-remove {
+      font-size: 10px;
+      color: var(--red);
+      margin-top: 3px;
+      cursor: pointer;
+    }
+
+    .slot-hint {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+      margin-bottom: 10px;
+    }
+
+    /* CHAR GRID */
+    .search-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .search-row input {
+      flex: 1;
+    }
+
+    .team-summary {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+      margin-bottom: 8px;
+      min-height: 14px;
+    }
+
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+      gap: 5px;
+    }
+
+    .char-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 8px 10px;
+      cursor: grab;
+      transition: border-color .12s, background .12s;
+      user-select: none;
+    }
+
+    .char-card:hover {
+      border-color: var(--border2);
+      background: #1e232b;
+    }
+
+    .char-card.in-team {
+      opacity: .35;
+      cursor: not-allowed;
+    }
+
+    .char-card.dragging {
+      opacity: .4;
+    }
+
+    .cc-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .cc-id {
+      font-size: 9px;
+      color: var(--text3);
+      font-family: var(--mono);
+      margin-top: 1px;
+    }
+
+    .cc-tags {
+      display: flex;
+      gap: 3px;
+      margin-top: 5px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: var(--mono);
+    }
+
+    .r-healer {
+      background: rgba(105, 240, 174, .12);
+      color: var(--green);
+    }
+
+    .r-dps {
+      background: rgba(255, 107, 107, .12);
+      color: var(--red);
+    }
+
+    .r-support {
+      background: rgba(206, 147, 216, .12);
+      color: var(--purple);
+    }
+
+    .r-sustain {
+      background: rgba(255, 183, 77, .12);
+      color: var(--orange);
+    }
+
+    .t-path {
+      background: rgba(79, 195, 247, .1);
+      color: var(--accent);
+    }
+
+    .t-elem {
+      background: rgba(255, 255, 255, .05);
+      color: var(--text3);
+    }
+
+    /* TIME */
+    .time-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .time-row label {
+      font-size: 12px;
+      color: var(--text2);
+      font-family: var(--mono);
+      white-space: nowrap;
+    }
+
+    .time-row input[type=number] {
+      font-size: 16px;
+      width: 90px;
+    }
+
+    /* HASH */
+    .hash-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .hash-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+
+    .hc-label {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .hc-val {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--accent);
+      font-family: var(--mono);
+      margin: 3px 0;
+    }
+
+    .hc-desc {
+      font-size: 9px;
+      color: var(--text3);
+    }
+
+    .seed-row {
+      font-family: var(--mono);
+      font-size: 11px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 7px 12px;
+      color: var(--text2);
+    }
+
+    .seed-row span {
+      color: var(--gold);
+    }
+
+    /* RELIC CARDS */
+    .relic-count-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .relic-count-row label {
+      font-size: 12px;
+      color: var(--text2);
+      font-family: var(--mono);
+    }
+
+    .relic-count-row span {
+      font-size: 11px;
+      color: var(--text3);
+      font-family: var(--mono);
+    }
+
+    .relic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .relic-card {
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+
+    .rc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .rc-num {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+    }
+
+    .rc-piece {
+      font-size: 10px;
+      color: var(--accent);
+      font-family: var(--mono);
+      cursor: pointer;
+      padding: 2px 8px;
+      border: 1px solid var(--border2);
+      border-radius: 3px;
+      background: var(--surface);
+      transition: border-color .1s;
+    }
+
+    .rc-piece:hover {
+      border-color: var(--accent);
+    }
+
+    .rc-subs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+    }
+
+    .rsub {
+      padding: 3px 7px;
+      border: 1px solid var(--border2);
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 10px;
+      font-family: var(--mono);
+      color: var(--text2);
+      background: var(--surface);
+      transition: all .1s;
+      user-select: none;
+    }
+
+    .rsub:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .rsub.on {
+      border-color: var(--green);
+      background: rgba(105, 240, 174, .12);
+      color: var(--green);
+    }
+
+    .rsub.max {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    .rc-count {
+      font-size: 9px;
+      color: var(--text3);
+      font-family: var(--mono);
+      margin-top: 5px;
+    }
+
+    /* AVG RESULT */
+    .avg-box {
+      background: rgba(105, 240, 174, .04);
+      border: 1px solid rgba(105, 240, 174, .25);
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+
+    .avg-box .ab-label {
+      font-size: 10px;
+      color: var(--green);
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+
+    .avg-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .avg-bar-label {
+      font-size: 10px;
+      color: var(--text2);
+      font-family: var(--mono);
+      width: 76px;
+      flex-shrink: 0;
+    }
+
+    .avg-bar-track {
+      flex: 1;
+      height: 9px;
+      background: var(--surface2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .avg-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width .3s;
+    }
+
+    .avg-bar-ct {
+      font-size: 10px;
+      font-family: var(--mono);
+      width: 56px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .avg-top4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      font-family: var(--mono);
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(105, 240, 174, .15);
+    }
+
+    /* OUTCOME */
+    .section-label {
+      font-size: 11px;
+      color: var(--text2);
+      margin-bottom: 6px;
+      font-family: var(--mono);
+    }
+
+    .outcome-row {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .outcome-btn {
+      padding: 5px 10px;
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-family: var(--mono);
+      color: var(--text2);
+      background: var(--surface2);
+      transition: all .12s;
+    }
+
+    .outcome-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .outcome-btn.active {
+      border-color: var(--green);
+      background: rgba(105, 240, 174, .1);
+      color: var(--green);
+    }
+
+    /* FREQ BOX */
+    .freq-box {
+      background: rgba(79, 195, 247, .04);
+      border: 1px solid rgba(79, 195, 247, .2);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+    }
+
+    .freq-box .fb-label {
+      font-size: 10px;
+      color: var(--accent);
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 4px;
+    }
+
+    .freq-box .fb-sub {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+      margin-bottom: 6px;
+    }
+
+    .freq-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .freq-bar-label {
+      font-size: 10px;
+      color: var(--text2);
+      font-family: var(--mono);
+      width: 76px;
+      flex-shrink: 0;
+    }
+
+    .freq-bar-track {
+      flex: 1;
+      height: 7px;
+      background: var(--surface2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .freq-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width .3s;
+    }
+
+    .freq-bar-pct {
+      font-size: 10px;
+      color: var(--accent);
+      font-family: var(--mono);
+      width: 32px;
+      text-align: right;
+    }
+
+    /* PRED */
+    .substat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+
+    .sb-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .sb-name {
+      font-size: 11px;
+      color: var(--text2);
+      width: 76px;
+      flex-shrink: 0;
+      font-family: var(--mono);
+    }
+
+    .sb-track {
+      flex: 1;
+      height: 10px;
+      background: var(--surface2);
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .sb-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width .4s;
+    }
+
+    .sb-pct {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+      width: 32px;
+      text-align: right;
+    }
+
+    .sb-tick {
+      font-size: 10px;
+      width: 12px;
+      color: var(--green);
+    }
+
+    .pred-box {
+      background: rgba(79, 195, 247, .05);
+      border: 1px solid rgba(79, 195, 247, .2);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+    }
+
+    .pred-box .pb-label {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 4px;
+    }
+
+    .pred-box .pb-val {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      font-family: var(--mono);
+    }
+
+    /* BUTTONS */
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 7px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: var(--mono);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      transition: all .12s;
+      border: 1px solid;
+    }
+
+    .btn-primary {
+      background: rgba(79, 195, 247, .1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: rgba(79, 195, 247, .2);
+    }
+
+    .btn-danger {
+      background: rgba(255, 107, 107, .08);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .btn-danger:hover {
+      background: rgba(255, 107, 107, .15);
+    }
+
+    .btn-gold {
+      background: rgba(255, 213, 79, .08);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .btn-gold:hover {
+      background: rgba(255, 213, 79, .15);
+    }
+
+    .btn-green {
+      background: rgba(105, 240, 174, .08);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .btn-green:hover {
+      background: rgba(105, 240, 174, .15);
+    }
+
+    .btn:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
+    /* LOG TABLE */
+    .log-table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    th {
+      text-align: left;
+      padding: 6px 8px;
+      color: var(--text3);
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    td {
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text2);
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .empty-log {
+      text-align: center;
+      padding: 24px;
+      color: var(--text3);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="scanline"></div>
+  <div class="container">
+
+    <div class="header">
+      <h1>HSR <span>Relic Seed</span> Simulator</h1>
+      <p>// cavern of corrosion — substat research tool v3.0</p>
+    </div>
+
+    <div class="status-bar">
+      STATUS: <span class="sg">READY</span> &nbsp;|&nbsp; RUNS LOGGED: <span class="sc" id="run-count">0</span>
+      &nbsp;|&nbsp; TEAM: <span id="status-team">—</span>
+    </div>
+
+    <!-- CAVERN -->
+    <div class="panel">
+      <div class="panel-title">Cavern</div>
+      <select id="cavern-select" onchange="compute()">
+        <option value="">— select cavern —</option>
+      </select>
+      <div class="cavern-sets" id="cavern-sets"></div>
+    </div>
+
+    <!-- TEAM -->
+    <div class="panel">
+      <div class="panel-title">Team Builder &nbsp;<span id="lock-indicator"
+          style="font-size:10px;color:var(--gold);font-family:var(--mono)"></span></div>
+      <div class="slots" id="slots"></div>
+      <div class="slot-hint">click slot to select · click char to fill &nbsp;|&nbsp; drag char card onto slot
+        &nbsp;|&nbsp; drag filled slot onto another to swap</div>
+      <div class="search-row">
+        <input type="text" id="char-search"
+          placeholder="Search name · path (Remem/Harm/Hunt...) · element (Ice/Wind/Quantum...)..."
+          oninput="currentPage=1; renderChars()">
+        <button class="btn btn-green" id="lock-btn" onclick="toggleLock()">Lock team</button>
+      </div>
+      <div class="team-summary" id="team-summary"></div>
+      <div class="char-grid" id="char-grid"></div>
+
+      <!-- PAGINATION CONTROLS -->
+      <div id="char-pagination"
+        style="margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 12px; font-family: var(--mono); font-size: 11px;">
+        <button class="btn" id="prev-page" onclick="changePage(-1)" style="padding: 4px 10px; font-size: 10px;">&lt;
+          PREV</button>
+        <span style="color: var(--text3)">PAGE <span id="current-page-val" style="color: var(--accent)">1</span> / <span
+            id="total-pages-val">1</span></span>
+        <button class="btn" id="next-page" onclick="changePage(1)" style="padding: 4px 10px; font-size: 10px;">NEXT
+          &gt;</button>
+      </div>
+    </div>
+
+    <!-- TIME -->
+    <div class="panel">
+      <div class="panel-title">Clear Time &amp; Notes</div>
+      <div class="time-row" style="margin-bottom: 12px; gap: 20px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <label>SECONDS</label>
+          <input type="number" id="clear-time" min="1" max="999" step="1" value="90"
+            oninput="syncToMinSec(); compute()">
+        </div>
+        <div
+          style="display: flex; align-items: center; gap: 8px; padding-left: 20px; border-left: 1px solid var(--border2);">
+          <span style="font-size: 11px; color: var(--text3); font-family: var(--mono); white-space: nowrap;">⚡
+            TRANSLATOR:</span>
+          <input type="number" id="t-min" placeholder="min" min="0" max="15" style="width: 55px;"
+            oninput="translateTime()">
+          <span style="font-size: 12px; color: var(--text3); font-family: var(--mono);">m</span>
+          <input type="number" id="t-sec" placeholder="sec" min="0" max="59" style="width: 55px;"
+            oninput="translateTime()">
+          <span style="font-size: 12px; color: var(--text3); font-family: var(--mono);">s</span>
+        </div>
+      </div>
+      <div class="slot-hint" style="margin-bottom: 10px;">Type exact seconds shown in game OR use the translator for [m
+        + s] conversion</div>
+      <input type="text" class="notes-input" id="run-notes"
+        placeholder="notes: weakness broke turn2 · 5* boots · double sustain...">
+    </div>
+
+    <!-- HASH -->
+    <div class="panel">
+      <div class="panel-title">Hash Analysis &nbsp;<span
+          style="font-size:9px;color:var(--text3);font-family:var(--mono)">experimental — real server seed
+          unknown</span></div>
+      <div class="hash-grid">
+        <div class="hash-card">
+          <div class="hc-label">Sum mod</div>
+          <div class="hc-val" id="h-sum">—</div>
+          <div class="hc-desc">(sum IDs + time) mod 10000</div>
+        </div>
+        <div class="hash-card">
+          <div class="hc-label">XOR</div>
+          <div class="hc-val" id="h-xor">—</div>
+          <div class="hc-desc">XOR all IDs ^ (time×7)</div>
+        </div>
+        <div class="hash-card">
+          <div class="hc-label">Slot-weighted</div>
+          <div class="hc-val" id="h-slot">—</div>
+          <div class="hc-desc">slot4×3 + slot1+2+3 + time</div>
+        </div>
+      </div>
+      <div class="seed-row">SEED: <span id="full-seed">fill team to generate</span></div>
+    </div>
+
+    <!-- RELIC DROP LOGGER -->
+    <div class="panel">
+      <div class="panel-title">Relic Drop Logger</div>
+      <div class="relic-count-row">
+        <label>RELICS DROPPED</label>
+        <input type="number" id="relic-count" min="1" max="12" step="1" value="7" oninput="buildRelicCards()">
+        <span>fill each card with substats only — skip main stat</span>
+      </div>
+      <div class="relic-grid" id="relic-grid"></div>
+      <div class="avg-box" id="avg-box" style="display:none">
+        <div class="ab-label">Substat frequency across all <span id="avg-total">0</span> relics this run</div>
+        <div id="avg-bars"></div>
+        <div class="avg-top4" id="avg-top4"></div>
+      </div>
+      <div class="section-label">// run outcome — auto-detected from relics, tap to override:</div>
+      <div class="outcome-row" id="outcome-row">
+        <button class="outcome-btn" data-val="spd-double-crit" onclick="setOutcome(this)">SPD + CR + CD</button>
+        <button class="outcome-btn" data-val="double-crit" onclick="setOutcome(this)">CR + CD only</button>
+        <button class="outcome-btn" data-val="spd-one-crit" onclick="setOutcome(this)">SPD + one crit</button>
+        <button class="outcome-btn" data-val="one-crit" onclick="setOutcome(this)">one crit only</button>
+        <button class="outcome-btn" data-val="effect-junk" onclick="setOutcome(this)">Effect junk</button>
+        <button class="outcome-btn" data-val="flat-junk" onclick="setOutcome(this)">Flat junk</button>
+        <button class="outcome-btn" data-val="mixed" onclick="setOutcome(this)">Mixed</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="log-btn" onclick="logRun()" disabled>Log this run</button>
+        <button class="btn btn-danger" onclick="clearAll()">Clear all runs</button>
+        <button class="btn btn-gold" id="export-btn" onclick="exportLog()" disabled>Export debug .txt</button>
+      </div>
+    </div>
+
+    <!-- PREDICTION -->
+    <div class="panel">
+      <div class="panel-title">Prediction</div>
+      <div class="substat-list" id="bars"></div>
+      <div class="pred-box">
+        <div class="pb-label">Hash model guess (experimental — gets better as you log runs)</div>
+        <div class="pb-val" id="pred-val">—</div>
+      </div>
+      <div class="freq-box" id="freq-box" style="display:none">
+        <div class="fb-label">Learned from your runs — same slot order</div>
+        <div class="fb-sub" id="freq-sub"></div>
+        <div id="freq-bars"></div>
+      </div>
+    </div>
+
+    <!-- RUN LOG -->
+    <div class="panel">
+      <div class="panel-title">Run Log</div>
+      <div class="log-table-wrap">
+        <div class="empty-log" id="empty-log">No runs logged yet.</div>
+        <table id="log-table" style="display:none">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Slot order</th>
+              <th>ID array</th>
+              <th>Time</th>
+              <th>Cavern</th>
+              <th>Relics</th>
+              <th>Outcome</th>
+              <th>Avg top 4</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="log-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    // ── DATA ─────────────────────────────────────────────────────────────────────
+    const CHARS = [
+      // 10xx: Herta Space Station / Early / Crossover
+      { id: 1001, name: 'March 7th', role: 'sustain', path: 'Pres', elem: 'Ice' },
+      { id: 1002, name: 'Dan Heng', role: 'dps', path: 'Hunt', elem: 'Wind' },
+      { id: 1003, name: 'Himeko', role: 'dps', path: 'Erad', elem: 'Fire' },
+      { id: 1004, name: 'Welt', role: 'dps', path: 'Nihil', elem: 'Imaginary' },
+      { id: 1005, name: 'Kafka', role: 'dps', path: 'Nihil', elem: 'Lightning' },
+      { id: 1006, name: 'Silver Wolf', role: 'support', path: 'Nihil', elem: 'Quantum' },
+      { id: 1008, name: 'Arlan', role: 'dps', path: 'Dest', elem: 'Lightning' },
+      { id: 1009, name: 'Asta', role: 'support', path: 'Harm', elem: 'Fire' },
+      { id: 1013, name: 'Herta', role: 'dps', path: 'Erad', elem: 'Ice' },
+      { id: 1014, name: 'Saber', role: 'dps', path: 'Dest', elem: 'Wind' },
+      { id: 1015, name: 'Archer', role: 'dps', path: 'Hunt', elem: 'Quantum' },
+
+      // 11xx: Belobog
+      { id: 1101, name: 'Bronya', role: 'support', path: 'Harm', elem: 'Wind' },
+      { id: 1102, name: 'Seele', role: 'dps', path: 'Hunt', elem: 'Quantum' },
+      { id: 1103, name: 'Serval', role: 'dps', path: 'Erad', elem: 'Lightning' },
+      { id: 1104, name: 'Gepard', role: 'sustain', path: 'Pres', elem: 'Ice' },
+      { id: 1105, name: 'Natasha', role: 'healer', path: 'Abund', elem: 'Physical' },
+      { id: 1106, name: 'Pela', role: 'support', path: 'Nihil', elem: 'Ice' },
+      { id: 1107, name: 'Clara', role: 'dps', path: 'Dest', elem: 'Physical' },
+      { id: 1108, name: 'Sampo', role: 'dps', path: 'Nihil', elem: 'Wind' },
+      { id: 1109, name: 'Hook', role: 'dps', path: 'Dest', elem: 'Fire' },
+      { id: 1110, name: 'Lynx', role: 'healer', path: 'Abund', elem: 'Quantum' },
+      { id: 1111, name: 'Luka', role: 'dps', path: 'Nihil', elem: 'Physical' },
+      { id: 1112, name: 'Topaz & Numby', role: 'dps', path: 'Hunt', elem: 'Fire' },
+
+      // 12xx: Xianzhou Luofu
+      { id: 1201, name: 'Qingque', role: 'dps', path: 'Erad', elem: 'Quantum' },
+      { id: 1202, name: 'Tingyun', role: 'support', path: 'Harm', elem: 'Lightning' },
+      { id: 1203, name: 'Luocha', role: 'sustain', path: 'Abund', elem: 'Imaginary' },
+      { id: 1204, name: 'Jing Yuan', role: 'dps', path: 'Erad', elem: 'Lightning' },
+      { id: 1205, name: 'Blade', role: 'dps', path: 'Dest', elem: 'Wind' },
+      { id: 1206, name: 'Sushang', role: 'dps', path: 'Hunt', elem: 'Physical' },
+      { id: 1207, name: 'Yukong', role: 'support', path: 'Harm', elem: 'Imaginary' },
+      { id: 1208, name: 'Fu Xuan', role: 'sustain', path: 'Pres', elem: 'Quantum' },
+      { id: 1209, name: 'Yanqing', role: 'dps', path: 'Hunt', elem: 'Ice' },
+      { id: 1210, name: 'Guinaifen', role: 'dps', path: 'Nihil', elem: 'Fire' },
+      { id: 1211, name: 'Bailu', role: 'healer', path: 'Abund', elem: 'Lightning' },
+      { id: 1212, name: 'Jingliu', role: 'dps', path: 'Dest', elem: 'Ice' },
+      { id: 1213, name: 'Dan Heng • IL', role: 'dps', path: 'Dest', elem: 'Imaginary' },
+      { id: 1214, name: 'Xueyi', role: 'dps', path: 'Dest', elem: 'Quantum' },
+      { id: 1215, name: 'Hanya', role: 'support', path: 'Harm', elem: 'Physical' },
+      { id: 1217, name: 'Huohuo', role: 'healer', path: 'Abund', elem: 'Wind' },
+      { id: 1218, name: 'Jiaoqiu', role: 'support', path: 'Nihil', elem: 'Fire' },
+      { id: 1220, name: 'Feixiao', role: 'dps', path: 'Hunt', elem: 'Wind' },
+      { id: 1221, name: 'Yunli', role: 'dps', path: 'Dest', elem: 'Physical' },
+      { id: 1222, name: 'Lingsha', role: 'sustain', path: 'Abund', elem: 'Fire' },
+      { id: 1223, name: 'Moze', role: 'dps', path: 'Hunt', elem: 'Lightning' },
+      { id: 1224, name: 'March 7th (Hunt)', role: 'dps', path: 'Hunt', elem: 'Imaginary' },
+      { id: 1225, name: 'Fugue', role: 'support', path: 'Nihil', elem: 'Fire' },
+
+      // 13xx: Penacony / Late 2.x
+      { id: 1301, name: 'Gallagher', role: 'sustain', path: 'Abund', elem: 'Fire' },
+      { id: 1302, name: 'Argenti', role: 'dps', path: 'Erad', elem: 'Physical' },
+      { id: 1303, name: 'Ruan Mei', role: 'support', path: 'Harm', elem: 'Ice' },
+      { id: 1304, name: 'Aventurine', role: 'sustain', path: 'Pres', elem: 'Imaginary' },
+      { id: 1305, name: 'Dr. Ratio', role: 'dps', path: 'Hunt', elem: 'Imaginary' },
+      { id: 1306, name: 'Sparkle', role: 'support', path: 'Harm', elem: 'Quantum' },
+      { id: 1307, name: 'Black Swan', role: 'dps', path: 'Nihil', elem: 'Wind' },
+      { id: 1308, name: 'Acheron', role: 'dps', path: 'Nihil', elem: 'Lightning' },
+      { id: 1309, name: 'Robin', role: 'support', path: 'Harm', elem: 'Physical' },
+      { id: 1310, name: 'Firefly', role: 'dps', path: 'Dest', elem: 'Fire' },
+      { id: 1311, name: 'Screwllum', role: 'dps', path: 'Erad', elem: 'Imaginary' },
+      { id: 1312, name: 'Misha', role: 'dps', path: 'Dest', elem: 'Ice' },
+      { id: 1313, name: 'Sunday', role: 'support', path: 'Harm', elem: 'Imaginary' },
+      { id: 1314, name: 'Jade', role: 'dps', path: 'Erad', elem: 'Quantum' },
+      { id: 1315, name: 'Boothill', role: 'dps', path: 'Hunt', elem: 'Physical' },
+      { id: 1317, name: 'Rappa', role: 'dps', path: 'Erad', elem: 'Imaginary' },
+      { id: 1321, name: 'The Dahlia', role: 'dps', path: 'Nihil', elem: 'Fire' },
+
+      // 14xx: Amphoreus / 3.x
+      { id: 1401, name: 'The Herta', role: 'dps', path: 'Erad', elem: 'Ice' },
+      { id: 1402, name: 'Aglaea', role: 'dps', path: 'Remem', elem: 'Lightning' },
+      { id: 1403, name: 'Tribbie', role: 'support', path: 'Harm', elem: 'Quantum' },
+      { id: 1404, name: 'Mydei', role: 'dps', path: 'Dest', elem: 'Imaginary' },
+      { id: 1405, name: 'Anaxa', role: 'dps', path: 'Erad', elem: 'Wind' },
+      { id: 1406, name: 'Cipher', role: 'support', path: 'Hunt', elem: 'Quantum' },
+      { id: 1407, name: 'Castorice', role: 'dps', path: 'Remem', elem: 'Quantum' },
+      { id: 1408, name: 'Phainon', role: 'dps', path: 'Dest', elem: 'Physical' },
+      { id: 1409, name: 'Hyacine', role: 'healer', path: 'Remem', elem: 'Wind' },
+      { id: 1410, name: 'Hysilens', role: 'support', path: 'Nihil', elem: 'Physical' },
+      { id: 1412, name: 'Cerydra', role: 'healer', path: 'Harm', elem: 'Wind' },
+      { id: 1413, name: 'Evernight', role: 'dps', path: 'Remem', elem: 'Ice' },
+      { id: 1414, name: 'Dan Heng • PT', role: 'dps', path: 'Pres', elem: 'Physical' },
+      { id: 1415, name: 'Cyrene', role: 'dps', path: 'Remem', elem: 'Ice' },
+
+      // 15xx: 4.0?
+      { id: 1501, name: 'Sparxie', role: 'support', path: 'Elat', elem: 'Fire' },
+      { id: 1502, name: 'Yao Guang', role: 'support', path: 'Elat', elem: 'Physical' },
+
+      // 8xxx: Trailblazer
+      { id: 8001, name: 'TB (Dest/M)', role: 'dps', path: 'Dest', elem: 'Physical' },
+      { id: 8002, name: 'TB (Dest/F)', role: 'dps', path: 'Dest', elem: 'Physical' },
+      { id: 8003, name: 'TB (Pres/M)', role: 'sustain', path: 'Pres', elem: 'Fire' },
+      { id: 8004, name: 'TB (Pres/F)', role: 'sustain', path: 'Pres', elem: 'Fire' },
+      { id: 8005, name: 'TB (Harm/M)', role: 'support', path: 'Harm', elem: 'Imaginary' },
+      { id: 8006, name: 'TB (Harm/F)', role: 'support', path: 'Harm', elem: 'Imaginary' },
+      { id: 8007, name: 'TB (Rem/M)', role: 'support', path: 'Remem', elem: 'Ice' },
+      { id: 8008, name: 'TB (Rem/F)', role: 'support', path: 'Remem', elem: 'Ice' },
+    ];
+
+    const CAVERNS = [
+      { id: 'c01', name: 'Path of Jabbing Punch', sets: 'Champion of Streetwise Boxing / Thief of Shooting Meteor' },
+      { id: 'c02', name: 'Path of Gelid Wind', sets: 'Hunter of Glacial Forest / Eagle of Twilight Line' },
+      { id: 'c03', name: 'Path of Drifting', sets: 'Passerby of Wandering Cloud / Musketeer of Wild Wheat' },
+      { id: 'c04', name: 'Path of Providence', sets: 'Guard of Wuthering Snow / Genius of Brilliant Stars' },
+      { id: 'c05', name: 'Path of Holy Hymn', sets: 'Knight of Purity Palace / Band of Sizzling Thunder' },
+      { id: 'c06', name: 'Path of Conflagration', sets: 'Firesmith of Lava-Forging / Wastelander of Banditry Desert' },
+      { id: 'c07', name: 'Path of Elixir Seekers', sets: 'Longevous Disciple / Messenger Traversing Hackerspace' },
+      { id: 'c08', name: 'Path of Darkness', sets: 'The Ashblazing Grand Duke / Prisoner in Deep Confinement' },
+      { id: 'c09', name: 'Path of Dreamdive', sets: 'Pioneer Diver of Dead Waters / Watchmaker, Master of Dream Machinations' },
+      { id: 'c10', name: 'Path of Cavalier', sets: 'Iron Cavalry Against the Scourge / The Wind-Soaring Valorous' },
+      { id: 'c11', name: 'Path of Uncertainty', sets: "Sacerdos' Relived Ordeal / Scholar Lost in Erudition" },
+      { id: 'c12', name: 'Path of Aria', sets: 'Hero of Triumphant Song / Poet of Mourning Collapse' },
+      { id: 'c13', name: 'Path of Hidden Salvation', sets: 'World-Remaking Deliverer / Self-Enshrouded Recluse' },
+      { id: 'c14', name: 'Path of Possession', sets: 'Ever-Glorious Magical Girl / Diviner of Distant Reach' },
+    ];
+
+    const SUBSTATS = [
+      { name: 'HP flat', w: 10, color: '#4db6ac' },
+      { name: 'ATK flat', w: 10, color: '#4db6ac' },
+      { name: 'DEF flat', w: 10, color: '#4db6ac' },
+      { name: 'HP%', w: 10, color: '#4fc3f7' },
+      { name: 'ATK%', w: 10, color: '#4fc3f7' },
+      { name: 'DEF%', w: 10, color: '#4fc3f7' },
+      { name: 'SPD', w: 4, color: '#ffd54f' },
+      { name: 'Crit Rate', w: 6, color: '#ff8a65' },
+      { name: 'Crit DMG', w: 6, color: '#ff8a65' },
+      { name: 'Effect Hit', w: 8, color: '#ce93d8' },
+      { name: 'Effect RES', w: 8, color: '#90a4ae' },
+      { name: 'Break Eff', w: 8, color: '#90a4ae' },
+    ];
+    const TOTAL_W = SUBSTATS.reduce((s, x) => s + x.w, 0);
+    const PIECE_TYPES = ['Head', 'Hands', 'Chest', 'Boots', 'Orb', 'Rope'];
+
+    // ── STATE ─────────────────────────────────────────────────────────────────────
+    let team = [null, null, null, null];
+    let activeSlot = 0;
+    let teamLocked = false;
+    let selectedOutcome = '';
+    let relicData = [];  // [{piece, subs:Set}]
+    let avgTop4 = [];    // computed from relicData
+    let logs = [];
+    let dragSrc = null;
+
+    // pagination
+    let currentPage = 1;
+    const ITEMS_PER_PAGE = 36; // Approx 6 rows x 6 columns
+
+    // ── INIT ─────────────────────────────────────────────────────────────────────
+    function init() {
+      const sel = document.getElementById('cavern-select');
+      CAVERNS.forEach(cv => {
+        const o = document.createElement('option');
+        o.value = cv.id;
+        o.textContent = cv.name;
+        sel.appendChild(o);
+      });
+      buildRelicCards();
+      renderSlots();
+      renderChars();
+      compute();
+    }
+
+    // ── HELPERS ───────────────────────────────────────────────────────────────────
+    function roleClass(r) { return { healer: 'r-healer', dps: 'r-dps', support: 'r-support', sustain: 'r-sustain' }[r] || 'r-support'; }
+    function getTeamSummary() {
+      const f = team.filter(Boolean);
+      if (f.length < 4) return '';
+      const pc = {}; f.forEach(c => { pc[c.path] = (pc[c.path] || 0) + 1; });
+      const ps = Object.entries(pc).map(([p, n]) => n > 1 ? p + 'x' + n : p).join(' · ');
+      return 'paths: ' + ps + '   elems: ' + [...new Set(f.map(c => c.elem))].join(' · ');
+    }
+
+    // ── LOCK ──────────────────────────────────────────────────────────────────────
+    function toggleLock() {
+      teamLocked = !teamLocked;
+      const btn = document.getElementById('lock-btn');
+      btn.textContent = teamLocked ? 'Unlock team' : 'Lock team';
+      btn.style.cssText = teamLocked ? 'border-color:var(--gold);color:var(--gold)' : '';
+      document.getElementById('lock-indicator').textContent = teamLocked ? '[ LOCKED ]' : '';
+      renderChars();
+    }
+
+    // ── OUTCOME ───────────────────────────────────────────────────────────────────
+    function setOutcome(btn) {
+      selectedOutcome = btn.dataset.val === selectedOutcome ? '' : btn.dataset.val;
+      document.querySelectorAll('.outcome-btn').forEach(b => b.classList.toggle('active', b.dataset.val === selectedOutcome));
+    }
+
+    // ── TEAM SLOTS ────────────────────────────────────────────────────────────────
+    function renderSlots() {
+      const el = document.getElementById('slots');
+      el.innerHTML = '';
+      for (let i = 0; i < 4; i++) {
+        const t = team[i];
+        const d = document.createElement('div');
+        d.className = 'slot' + (i === activeSlot ? ' active' : '') + (t ? ' filled' : '');
+        if (t) {
+          d.draggable = true;
+          d.innerHTML = `<div class="slot-num">SLOT ${i + 1}</div><div class="slot-name">${t.name}</div><div class="slot-meta">${t.id} · ${t.path} · ${t.elem}</div><div class="slot-remove" data-slot="${i}">[ remove ]</div>`;
+          d.addEventListener('dragstart', e => { if (!teamLocked) { dragSrc = { type: 'slot', idx: i }; e.dataTransfer.effectAllowed = 'move'; } });
+        } else {
+          d.innerHTML = `<div class="slot-num">SLOT ${i + 1}</div><div class="slot-empty">— drop here —</div>`;
+        }
+        d.addEventListener('click', e => {
+          if (e.target.classList.contains('slot-remove')) {
+            if (!teamLocked) { team[parseInt(e.target.dataset.slot)] = null; refresh(); }
+            return;
+          }
+          if (!teamLocked) { activeSlot = i; renderSlots(); renderChars(); }
+        });
+        d.addEventListener('dragover', e => { e.preventDefault(); d.classList.add('drag-over'); });
+        d.addEventListener('dragleave', () => d.classList.remove('drag-over'));
+        d.addEventListener('drop', e => {
+          e.preventDefault(); d.classList.remove('drag-over');
+          if (teamLocked || !dragSrc) return;
+          if (dragSrc.type === 'slot') {
+            if (dragSrc.idx !== i) { const tmp = team[dragSrc.idx]; team[dragSrc.idx] = team[i]; team[i] = tmp; }
+          } else {
+            const c = CHARS.find(x => x.id === dragSrc.charId);
+            if (c && !team.some(x => x && x.id === c.id)) {
+              team[i] = c;
+              const nxt = team.findIndex((x, j) => j > i && !x);
+              activeSlot = nxt >= 0 ? nxt : (team.findIndex(x => !x) >= 0 ? team.findIndex(x => !x) : i);
+            }
+          }
+          dragSrc = null; refresh();
+        });
+        el.appendChild(d);
+      }
+      document.getElementById('team-summary').textContent = getTeamSummary();
+    }
+
+    function renderChars() {
+      const grid = document.getElementById('char-grid');
+      const q = (document.getElementById('char-search')?.value || '').toLowerCase();
+      grid.innerHTML = '';
+      if (teamLocked) {
+        grid.innerHTML = '<div style="font-size:11px;color:var(--text3);font-family:var(--mono);padding:6px 0">Team locked — only change time/notes. Unlock to swap characters.</div>';
+        document.getElementById('char-pagination').style.display = 'none';
+        return;
+      }
+
+      const filtered = CHARS.filter(c => !q || c.name.toLowerCase().includes(q) || c.path.toLowerCase().includes(q) || c.elem.toLowerCase().includes(q));
+
+      // Pagination logic
+      const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      const start = (currentPage - 1) * ITEMS_PER_PAGE;
+      const paginated = filtered.slice(start, start + ITEMS_PER_PAGE);
+
+      document.getElementById('char-pagination').style.display = filtered.length > ITEMS_PER_PAGE ? 'flex' : 'none';
+      document.getElementById('current-page-val').textContent = currentPage;
+      document.getElementById('total-pages-val').textContent = totalPages;
+      document.getElementById('prev-page').disabled = currentPage === 1;
+      document.getElementById('next-page').disabled = currentPage === totalPages;
+
+      paginated.forEach(c => {
+        const inTeam = team.some(t => t && t.id === c.id);
+        const d = document.createElement('div');
+        d.className = 'char-card' + (inTeam ? ' in-team' : '');
+        d.draggable = !inTeam;
+        d.innerHTML = `<div class="cc-name">${c.name}</div><div class="cc-id">${c.id}</div><div class="cc-tags"><span class="tag ${roleClass(c.role)}">${c.role}</span><span class="tag t-path">${c.path}</span><span class="tag t-elem">${c.elem}</span></div>`;
+        if (!inTeam) {
+          d.addEventListener('dragstart', e => { dragSrc = { type: 'card', charId: c.id }; e.dataTransfer.effectAllowed = 'move'; d.classList.add('dragging'); });
+          d.addEventListener('dragend', () => d.classList.remove('dragging'));
+          d.addEventListener('click', () => {
+            team[activeSlot] = c;
+            const nxt = team.findIndex((t, i) => i > activeSlot && !t);
+            if (nxt >= 0) activeSlot = nxt; else { const a = team.findIndex(t => !t); if (a >= 0) activeSlot = a; }
+            refresh();
+          });
+        }
+        grid.appendChild(d);
+      });
+    }
+
+    function changePage(delta) {
+      currentPage += delta;
+      renderChars();
+    }
+
+    // ── RELIC CARDS ───────────────────────────────────────────────────────────────
+    function buildRelicCards() {
+      const n = Math.max(1, Math.min(12, parseInt(document.getElementById('relic-count').value) || 7));
+      while (relicData.length < n) relicData.push({ piece: 'Head', subs: new Set() });
+      relicData = relicData.slice(0, n);
+      renderRelicCards();
+    }
+
+    function renderRelicCards() {
+      const grid = document.getElementById('relic-grid');
+      grid.innerHTML = '';
+      relicData.forEach((r, idx) => {
+        const card = document.createElement('div');
+        card.className = 'relic-card';
+
+        const hdr = document.createElement('div');
+        hdr.className = 'rc-header';
+        const numEl = document.createElement('span'); numEl.className = 'rc-num'; numEl.textContent = 'RELIC ' + (idx + 1);
+        const pieceEl = document.createElement('span'); pieceEl.className = 'rc-piece';
+        pieceEl.textContent = r.piece; pieceEl.title = 'Click to cycle piece type';
+        pieceEl.addEventListener('click', () => {
+          r.piece = PIECE_TYPES[(PIECE_TYPES.indexOf(r.piece) + 1) % PIECE_TYPES.length];
+          renderRelicCards();
+        });
+        hdr.appendChild(numEl); hdr.appendChild(pieceEl);
+        card.appendChild(hdr);
+
+        const subsEl = document.createElement('div'); subsEl.className = 'rc-subs';
+        SUBSTATS.forEach(s => {
+          const btn = document.createElement('div');
+          const isPicked = r.subs.has(s.name);
+          const isFull = r.subs.size >= 4 && !isPicked;
+          btn.className = 'rsub' + (isPicked ? ' on' : isFull ? ' max' : '');
+          btn.textContent = s.name;
+          btn.addEventListener('click', () => {
+            if (r.subs.has(s.name)) { r.subs.delete(s.name); }
+            else if (r.subs.size < 4) { r.subs.add(s.name); }
+            renderRelicCards();
+            updateAvg();
+          });
+          subsEl.appendChild(btn);
+        });
+        card.appendChild(subsEl);
+
+        const ctEl = document.createElement('div'); ctEl.className = 'rc-count';
+        ctEl.textContent = r.subs.size + '/4 substats selected';
+        card.appendChild(ctEl);
+
+        grid.appendChild(card);
+      });
+      updateAvg();
+    }
+
+    function updateAvg() {
+      const freq = {}; SUBSTATS.forEach(s => { freq[s.name] = 0; });
+      let total = 0;
+      relicData.forEach(r => r.subs.forEach(s => { if (freq[s] !== undefined) { freq[s]++; total++; } }));
+
+      const box = document.getElementById('avg-box');
+      box.style.display = total > 0 ? 'block' : 'none';
+      if (!total) { avgTop4 = []; updateLogBtn(); return; }
+
+      document.getElementById('avg-total').textContent = relicData.length;
+      const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).filter(([, n]) => n > 0);
+      const maxN = sorted[0][1];
+
+      const barsEl = document.getElementById('avg-bars');
+      barsEl.innerHTML = '';
+      sorted.forEach(([name, n]) => {
+        const pct = Math.round((n / relicData.length) * 100);
+        const sub = SUBSTATS.find(s => s.name === name);
+        const isCrit = name.includes('Crit') || name === 'SPD';
+        const isEff = name.includes('Effect');
+        const col = isCrit ? '#69f0ae' : isEff ? '#ff6b6b' : sub.color;
+        const row = document.createElement('div'); row.className = 'avg-bar-row';
+        row.innerHTML = `<div class="avg-bar-label">${name}</div><div class="avg-bar-track"><div class="avg-bar-fill" style="width:${Math.round(n / maxN * 100)}%;background:${col}"></div></div><div class="avg-bar-ct" style="color:${col}">${n}/${relicData.length} · ${pct}%</div>`;
+        barsEl.appendChild(row);
+      });
+
+      avgTop4 = sorted.slice(0, 4).map(([name]) => name);
+      document.getElementById('avg-top4').textContent = 'Run avg → ' + avgTop4.join(' + ');
+
+      // auto outcome
+      const hasCR = avgTop4.includes('Crit Rate');
+      const hasCD = avgTop4.includes('Crit DMG');
+      const hasSPD = avgTop4.includes('SPD');
+      const hasEff = avgTop4.some(s => s.includes('Effect'));
+      let ao = 'mixed';
+      if (hasCR && hasCD && hasSPD) ao = 'spd-double-crit';
+      else if (hasCR && hasCD) ao = 'double-crit';
+      else if (hasSPD && (hasCR || hasCD)) ao = 'spd-one-crit';
+      else if (hasCR || hasCD) ao = 'one-crit';
+      else if (hasEff) ao = 'effect-junk';
+      else if (!hasCR && !hasCD && !hasSPD) ao = 'flat-junk';
+      selectedOutcome = ao;
+      document.querySelectorAll('.outcome-btn').forEach(b => b.classList.toggle('active', b.dataset.val === ao));
+      updateLogBtn();
+    }
+
+    // ── LOG BUTTON STATE ──────────────────────────────────────────────────────────
+    function updateLogBtn() {
+      // enabled when team is full — relics optional but encouraged
+      document.getElementById('log-btn').disabled = !team.every(Boolean);
+    }
+
+    // ── HASH + COMPUTE ────────────────────────────────────────────────────────────
+    function hashSum(ids, t) { return (ids.reduce((s, x) => s + x, 0) + t) % 10000; }
+    function hashXOR(ids, t) { return ids.reduce((s, x) => s ^ x, 0) ^ (t * 7); }
+    function hashSlot(ids, t) { return (ids[3] * 3 + ids[0] + ids[1] + ids[2] + t) % 10000; }
+    function seededRand(seed) { let s = Math.abs(seed) | 1; return () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 0x100000000; }; }
+    function pickSubstats(seed) {
+      const rand = seededRand(seed);
+      let pool = SUBSTATS.map(s => ({ ...s })); const picked = [];
+      for (let p = 0; p < 4; p++) {
+        const tw = pool.reduce((s, x) => s + x.w, 0); let roll = rand() * tw;
+        for (let i = 0; i < pool.length; i++) { roll -= pool[i].w; if (roll <= 0) { picked.push(pool[i]); pool.splice(i, 1); break; } }
+      }
+      return picked;
+    }
+
+    function getLearnedFreq() {
+      if (!team.every(Boolean)) return null;
+      const key = team.map(t => t.id).join('-');
+      const matching = logs.filter(e => e.idArray === key && e.avgTop4.length > 0);
+      if (matching.length < 2) return null;
+      const freq = {}; SUBSTATS.forEach(s => { freq[s.name] = 0; });
+      matching.forEach(e => e.avgTop4.forEach(s => { if (freq[s] !== undefined) freq[s]++; }));
+      return { runs: matching.length, freq };
+    }
+
+    function compute() {
+      const filled = team.every(Boolean);
+      updateLogBtn();
+      document.getElementById('status-team').textContent = filled ? team.map(t => t.name).join(' / ') : '—';
+      if (!filled) {
+        ['h-sum', 'h-xor', 'h-slot'].forEach(id => document.getElementById(id).textContent = '—');
+        document.getElementById('full-seed').textContent = 'fill team to generate';
+        document.getElementById('pred-val').textContent = '—';
+        document.getElementById('bars').innerHTML = '';
+        document.getElementById('freq-box').style.display = 'none';
+        return;
+      }
+      const ids = team.map(t => t.id);
+      const ct = parseInt(document.getElementById('clear-time').value) || 90;
+      const cavSel = document.getElementById('cavern-select');
+      const cavId = cavSel.value || '';
+
+      const hsum = hashSum(ids, ct);
+      const hxor = Math.abs(hashXOR(ids, ct));
+      const hslot = hashSlot(ids, ct);
+      document.getElementById('h-sum').textContent = hsum;
+      document.getElementById('h-xor').textContent = hxor;
+      document.getElementById('h-slot').textContent = hslot;
+      document.getElementById('full-seed').textContent = ids.join('-') + ' @ ' + ct + 's' + (cavId ? ' (' + cavId + ')' : '');
+
+      const cv = CAVERNS.find(x => x.id === cavId);
+      document.getElementById('cavern-sets').textContent = cv ? cv.sets : '';
+
+      const avgSeed = (hsum + hxor + hslot) % 0xFFFFFF;
+      const predicted = pickSubstats(avgSeed);
+      const barsEl = document.getElementById('bars'); barsEl.innerHTML = '';
+      const pNames = new Set(predicted.map(s => s.name));
+      SUBSTATS.forEach(s => {
+        const pct = ((s.w / TOTAL_W) * 100).toFixed(1); const hit = pNames.has(s.name);
+        const row = document.createElement('div'); row.className = 'sb-row';
+        row.innerHTML = `<span class="sb-name">${s.name}</span><div class="sb-track"><div class="sb-fill" style="width:${Math.min(parseFloat(pct) * 5, 100)}%;background:${hit ? '#69f0ae' : s.color}"></div></div><span class="sb-pct">${pct}%</span><span class="sb-tick">${hit ? '✓' : ''}</span>`;
+        barsEl.appendChild(row);
+      });
+      document.getElementById('pred-val').textContent = predicted.map(s => s.name).join(' + ');
+
+      const learned = getLearnedFreq();
+      const fbox = document.getElementById('freq-box');
+      if (learned) {
+        fbox.style.display = 'block';
+        document.getElementById('freq-sub').textContent = learned.runs + ' logged run(s) with this slot order:';
+        const fb = document.getElementById('freq-bars'); fb.innerHTML = '';
+        Object.entries(learned.freq).sort((a, b) => b[1] - a[1]).filter(([, n]) => n > 0).forEach(([name, n]) => {
+          const pct = Math.round(n / learned.runs * 100);
+          const row = document.createElement('div'); row.className = 'freq-bar-row';
+          row.innerHTML = `<div class="freq-bar-label">${name}</div><div class="freq-bar-track"><div class="freq-bar-fill" style="width:${pct}%"></div></div><div class="freq-bar-pct">${pct}%</div>`;
+          fb.appendChild(row);
+        });
+      } else { fbox.style.display = 'none'; }
+    }
+
+    function refresh() { renderSlots(); renderChars(); compute(); }
+
+    // ── TIME TRANSLATOR ──────────────────────────────────────────────────────────
+    function translateTime() {
+      const m = parseInt(document.getElementById('t-min').value) || 0;
+      const s = parseInt(document.getElementById('t-sec').value) || 0;
+      const total = (m * 60) + s;
+      if (total > 0) {
+        document.getElementById('clear-time').value = total;
+        compute();
+      }
+    }
+
+    function syncToMinSec() {
+      const total = parseInt(document.getElementById('clear-time').value) || 0;
+      if (total > 0) {
+        document.getElementById('t-min').value = Math.floor(total / 60);
+        document.getElementById('t-sec').value = total % 60;
+      }
+    }
+
+    // ── LOG RUN ───────────────────────────────────────────────────────────────────
+    function logRun() {
+      if (!team.every(Boolean)) return;
+      const ids = team.map(t => t.id);
+      const ct = parseInt(document.getElementById('clear-time').value) || 90;
+      const cavSel = document.getElementById('cavern-select');
+      const cavId = cavSel.value || '';
+      const cavName = cavId ? (CAVERNS.find(x => x.id === cavId)?.name || cavId) : 'not selected';
+      const notes = document.getElementById('run-notes').value.trim();
+
+      // snapshot relic data
+      const relicSnapshot = relicData.map((r, i) => ({
+        n: i + 1,
+        piece: r.piece,
+        subs: [...r.subs]
+      }));
+
+      // frequency map for this run
+      const runFreq = {}; SUBSTATS.forEach(s => { runFreq[s.name] = 0; });
+      relicSnapshot.forEach(r => r.subs.forEach(s => { if (runFreq[s] !== undefined) runFreq[s]++; }));
+
+      const entry = {
+        n: logs.length + 1,
+        team: team.map(t => t.name),
+        idArray: ids.join('-'),
+        ids: [...ids],
+        slotOrder: team.map((t, i) => 'S' + (i + 1) + ':' + t.name),
+        pathSummary: getTeamSummary(),
+        ct, cavId, cavName,
+        outcome: selectedOutcome,
+        relics: relicSnapshot,
+        relicCount: relicSnapshot.length,
+        runFreq,
+        avgTop4: [...avgTop4],
+        notes,
+        ts: new Date().toISOString()
+      };
+      logs.push(entry);
+
+      // reset
+      selectedOutcome = ''; avgTop4 = [];
+      document.querySelectorAll('.outcome-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('run-notes').value = '';
+      relicData = []; buildRelicCards();
+      renderLogTable();
+      document.getElementById('run-count').textContent = logs.length;
+      document.getElementById('export-btn').disabled = false;
+      compute();
+    }
+
+    // ── LOG TABLE ─────────────────────────────────────────────────────────────────
+    function renderLogTable() {
+      const tbody = document.getElementById('log-body');
+      const empty = document.getElementById('empty-log');
+      const table = document.getElementById('log-table');
+      if (!logs.length) { empty.style.display = 'block'; table.style.display = 'none'; return; }
+      empty.style.display = 'none'; table.style.display = 'table';
+      tbody.innerHTML = '';
+      logs.slice().reverse().forEach(e => {
+        const oc = e.outcome || '';
+        const col = oc.includes('crit') || oc.includes('spd') ? 'var(--green)' : oc.includes('junk') ? 'var(--red)' : 'var(--text2)';
+        const relicSummary = e.relicCount > 0 ? e.relicCount + ' pieces' : '—';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+      <td>${e.n}</td>
+      <td style="font-size:10px">${e.slotOrder.join(' · ')}</td>
+      <td style="font-size:10px;font-family:var(--mono)">[${e.idArray}]</td>
+      <td>${e.ct}s</td>
+      <td style="font-size:10px">${e.cavName}</td>
+      <td style="font-size:10px">${relicSummary}</td>
+      <td style="font-size:11px;font-weight:500;color:${col}">${oc.replace(/-/g, ' ') || '—'}</td>
+      <td style="font-size:10px;color:var(--green)">${e.avgTop4.join(' + ') || '—'}</td>
+      <td style="font-size:10px;color:var(--text3)">${e.notes || ''}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function clearAll() {
+      if (!confirm('Clear ALL logged runs?')) return;
+      logs = []; relicData = []; avgTop4 = []; selectedOutcome = '';
+      buildRelicCards(); renderLogTable();
+      document.getElementById('run-count').textContent = 0;
+      document.getElementById('export-btn').disabled = true;
+      compute();
+    }
+
+    // ── EXPORT ────────────────────────────────────────────────────────────────────
+    function exportLog() {
+      if (!logs.length) return;
+      const W = 68, hr = '='.repeat(W), hr2 = '-'.repeat(W), hr3 = '·'.repeat(W);
+      const pad = (s, l) => String(s).padEnd(l);
+      const lines = [];
+
+      lines.push(hr);
+      lines.push('  HSR RELIC SEED SIMULATOR — DEBUG LOG v3.0');
+      lines.push('  Svarog Tracer Research Tool');
+      lines.push(hr);
+      lines.push('  Exported : ' + new Date().toLocaleString());
+      lines.push('  Total runs: ' + logs.length);
+      lines.push(hr); lines.push('');
+
+      // ── S1 OUTCOME DISTRIBUTION
+      lines.push('[ SECTION 1 — OUTCOME DISTRIBUTION ]'); lines.push(hr2);
+      const oc = {};
+      logs.forEach(e => { const o = e.outcome || 'not_selected'; oc[o] = (oc[o] || 0) + 1; });
+      Object.entries(oc).sort((a, b) => b[1] - a[1]).forEach(([o, n]) => {
+        lines.push('  ' + pad(o.replace(/-/g, ' '), 28) + ': ' + n + ' (' + Math.round(n / logs.length * 100) + '%)');
+      });
+      lines.push('');
+
+      // ── S2 GLOBAL SUBSTAT FREQUENCY (averaged across all relics all runs)
+      lines.push('[ SECTION 2 — GLOBAL SUBSTAT FREQUENCY (all relics, all runs) ]'); lines.push(hr2);
+      const gfreq = {}; SUBSTATS.forEach(s => { gfreq[s.name] = 0; });
+      let gTotalRelics = 0;
+      logs.forEach(e => {
+        e.relics.forEach(r => {
+          gTotalRelics++;
+          r.subs.forEach(s => { if (gfreq[s] !== undefined) gfreq[s]++; });
+        });
+      });
+      lines.push('  Total relics logged: ' + gTotalRelics + ' across ' + logs.length + ' runs'); lines.push('');
+      Object.entries(gfreq).sort((a, b) => b[1] - a[1]).forEach(([s, n]) => {
+        if (!n) return;
+        const pct = Math.round((n / gTotalRelics) * 100);
+        const bar = '█'.repeat(n) + '░'.repeat(Math.max(0, gTotalRelics - n));
+        lines.push('  ' + pad(s, 12) + ' : ' + bar.slice(0, 20) + '  (' + n + '/' + gTotalRelics + ' = ' + pct + '%)');
+      });
+      lines.push('');
+
+      // ── S3 SLOT ORDER ANALYSIS
+      lines.push('[ SECTION 3 — SLOT ORDER ANALYSIS ]'); lines.push(hr2);
+      lines.push('  Same 4 chars, different slot order = different ID array = different seed'); lines.push('');
+      const slotGroups = {};
+      logs.forEach(e => {
+        if (!slotGroups[e.idArray]) slotGroups[e.idArray] = { order: e.slotOrder.join(' | '), runs: [] };
+        slotGroups[e.idArray].runs.push(e);
+      });
+      Object.entries(slotGroups).forEach(([key, data]) => {
+        lines.push('  Array: [' + key + ']  (' + data.runs.length + ' run(s))');
+        lines.push('  Order: ' + data.order);
+        const af = {}; SUBSTATS.forEach(s => { af[s.name] = 0; });
+        let aRelics = 0;
+        data.runs.forEach(e => { e.relics.forEach(r => { aRelics++; r.subs.forEach(s => { if (af[s] !== undefined) af[s]++; }); }); });
+        const top = Object.entries(af).sort((a, b) => b[1] - a[1]).filter(([, n]) => n > 0).slice(0, 6);
+        if (top.length) lines.push('  Substat rates: ' + top.map(([s, n]) => s + ' ' + Math.round(n / aRelics * 100) + '%').join('  '));
+        const ocList = data.runs.map(e => e.outcome || '?').join(', ');
+        lines.push('  Outcomes: ' + ocList);
+        lines.push('');
+      });
+
+      // ── S4 CHARACTER CRIT CORRELATION
+      lines.push('[ SECTION 4 — CHARACTER CRIT CORRELATION ]'); lines.push(hr2);
+      lines.push('  Which character IDs in the team correlate with crit/SPD drops?'); lines.push('');
+      const cf = {};
+      logs.forEach(e => {
+        e.ids.forEach((id, slot) => {
+          if (!cf[id]) cf[id] = { name: e.team[slot], runs: 0, CR: 0, CD: 0, SPD: 0, relics: 0 };
+          cf[id].runs++;
+          e.relics.forEach(r => {
+            cf[id].relics++;
+            r.subs.forEach(s => {
+              if (s === 'Crit Rate') cf[id].CR++;
+              if (s === 'Crit DMG') cf[id].CD++;
+              if (s === 'SPD') cf[id].SPD++;
+            });
+          });
+        });
+      });
+      Object.entries(cf).sort((a, b) => b[1].runs - a[1].runs).forEach(([id, d]) => {
+        if (!d.relics) return;
+        const crPct = Math.round(d.CR / d.relics * 100);
+        const cdPct = Math.round(d.CD / d.relics * 100);
+        const spdPct = Math.round(d.SPD / d.relics * 100);
+        lines.push('  ' + pad(d.name, 16) + ' ID:' + pad(id, 6) + ' CR:' + pad(crPct + '%', 5) + ' CD:' + pad(cdPct + '%', 5) + ' SPD:' + pad(spdPct + '%', 5) + '  (' + d.runs + ' runs / ' + d.relics + ' relics)');
+      });
+      lines.push('');
+
+      // ── S5 PATH COMPOSITION
+      lines.push('[ SECTION 5 — PATH COMPOSITION ANALYSIS ]'); lines.push(hr2);
+      const pg = {};
+      logs.forEach(e => { const k = e.pathSummary || 'unknown'; if (!pg[k]) pg[k] = []; pg[k].push(e); });
+      Object.entries(pg).forEach(([ps, runs]) => {
+        lines.push('  ' + ps + ' — ' + runs.length + ' run(s)');
+        const af = {}; SUBSTATS.forEach(s => { af[s.name] = 0; }); let aR = 0;
+        runs.forEach(e => { e.relics.forEach(r => { aR++; r.subs.forEach(s => { if (af[s] !== undefined) af[s]++; }); }); });
+        const top = Object.entries(af).sort((a, b) => b[1] - a[1]).filter(([, n]) => n > 0).slice(0, 5);
+        if (top.length) lines.push('  Top: ' + top.map(([s, n]) => s + ' ' + Math.round(n / aR * 100) + '%').join('  '));
+        lines.push('');
+      });
+
+      // ── S6 CAVERN ANALYSIS
+      lines.push('[ SECTION 6 — CAVERN ANALYSIS ]'); lines.push(hr2);
+      const cg = {};
+      logs.forEach(e => { const c = e.cavName; if (!cg[c]) cg[c] = []; cg[c].push(e); });
+      Object.entries(cg).forEach(([cv, runs]) => {
+        lines.push('  ' + cv + ' — ' + runs.length + ' run(s)');
+        const af = {}; SUBSTATS.forEach(s => { af[s.name] = 0; }); let aR = 0;
+        runs.forEach(e => { e.relics.forEach(r => { aR++; r.subs.forEach(s => { if (af[s] !== undefined) af[s]++; }); }); });
+        const top = Object.entries(af).sort((a, b) => b[1] - a[1]).filter(([, n]) => n > 0).slice(0, 5);
+        if (top.length && aR) lines.push('  Top: ' + top.map(([s, n]) => s + ' ' + Math.round(n / aR * 100) + '%').join('  '));
+        lines.push('');
+      });
+
+      // ── S7 ALL RUNS FULL DETAIL
+      lines.push('[ SECTION 7 — ALL RUNS FULL DETAIL ]'); lines.push(hr2); lines.push('');
+      logs.forEach(e => {
+        lines.push('  RUN #' + String(e.n).padStart(3, '0') + '  ' + e.ts);
+        lines.push('  ' + hr3.slice(0, W - 2));
+        lines.push('  CAVERN     : ' + e.cavName);
+        lines.push('  SLOT ORDER : ' + e.slotOrder.join('  '));
+        lines.push('  ID ARRAY   : [' + e.idArray + ']');
+        lines.push('  PATHS      : ' + (e.pathSummary || '—'));
+        lines.push('  TIME       : ' + e.ct + 's');
+        lines.push('  OUTCOME    : ' + (e.outcome ? e.outcome.replace(/-/g, ' ') : 'not selected'));
+        lines.push('  AVG TOP 4  : ' + (e.avgTop4.length ? e.avgTop4.join(' + ') : 'not recorded'));
+        if (e.notes) lines.push('  NOTES      : ' + e.notes);
+        lines.push('');
+        if (e.relics.length) {
+          lines.push('  RELICS (' + e.relicCount + ' pieces):');
+          e.relics.forEach(r => {
+            if (r.subs.length) {
+              lines.push('    Relic ' + r.n + ' [' + pad(r.piece, 6) + ']: ' + r.subs.join('  ·  '));
+            } else {
+              lines.push('    Relic ' + r.n + ' [' + pad(r.piece, 6) + ']: (no substats logged)');
+            }
+          });
+          lines.push('');
+          lines.push('  SUBSTAT FREQUENCY THIS RUN:');
+          Object.entries(e.runFreq).sort((a, b) => b[1] - a[1]).filter(([, n]) => n > 0).forEach(([s, n]) => {
+            const pct = Math.round(n / e.relicCount * 100);
+            lines.push('    ' + pad(s, 12) + ' : ' + n + '/' + e.relicCount + ' relics (' + pct + '%)');
+          });
+        }
+        lines.push('');
+      });
+
+      lines.push(hr);
+      lines.push('  HOW TO READ THIS DATA:');
+      lines.push('');
+      lines.push('  S3 — same ID array → same substat cluster across runs?');
+      lines.push('       YES = ordered slot array is dominant seed variable');
+      lines.push('');
+      lines.push('  S4 — which character IDs score highest CR/CD/SPD % per relic?');
+      lines.push('       High % = that ID may anchor the crit zone in the seed');
+      lines.push('');
+      lines.push('  S5 — does Remem path comp score differently than Harm?');
+      lines.push('       Different % = path combination contributes to seed');
+      lines.push('');
+      lines.push('  S6 — does cavern change substat profile?');
+      lines.push('       Different % per cavern = stage ID is part of seed');
+      lines.push(hr);
+      lines.push('  END OF LOG — upload this file for analysis');
+      lines.push(hr);
+
+      const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'hsr_seed_debug_' + Date.now() + '.txt';
+      a.click();
+    }
+
+    init();
+  </script>
+</body>
+
+</html>

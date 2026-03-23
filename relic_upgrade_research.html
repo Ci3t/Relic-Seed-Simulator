@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relic Upgrade Research — Svarog</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700&display=swap');
+
+    :root {
+      --bg: #07090d;
+      --surface: #0f1218;
+      --surface2: #161b24;
+      --border: #1e2530;
+      --border2: #28333f;
+      --accent: #4fc3f7;
+      --gold: #ffd54f;
+      --green: #69f0ae;
+      --red: #ff6b6b;
+      --purple: #ce93d8;
+      --orange: #ffb74d;
+      --text: #e8eaf0;
+      --text2: #8a96a8;
+      --text3: #3d4a58;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Exo 2', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+
+    .scanline {
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, .04) 2px, rgba(0, 0, 0, .04) 4px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    h1 span {
+      color: var(--gold);
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: var(--text3);
+      font-family: var(--mono);
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+
+    .panel-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--text2);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* Upload */
+    .upload-area {
+      border: 2px dashed var(--border2);
+      border-radius: 6px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .15s;
+      margin-bottom: 12px;
+    }
+
+    .upload-area:hover,
+    .upload-area.drag {
+      border-color: var(--accent);
+    }
+
+    .upload-area p {
+      font-size: 12px;
+      color: var(--text3);
+      font-family: var(--mono);
+      margin-top: 6px;
+    }
+
+    input[type=file] {
+      display: none;
+    }
+
+    /* Candidate table */
+    .cand-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cand-row {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr 140px 100px;
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
+      transition: border-color .12s;
+    }
+
+    .cand-row:hover {
+      border-color: var(--accent);
+    }
+
+    .cand-row.selected {
+      border-color: var(--gold);
+      background: rgba(255, 213, 79, .05);
+    }
+
+    .cand-uid {
+      font-size: 12px;
+      color: var(--gold);
+      font-family: var(--mono);
+      font-weight: 700;
+    }
+
+    .cand-subs {
+      font-size: 10px;
+      color: var(--text2);
+      font-family: var(--mono);
+    }
+
+    .cand-info {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+    }
+
+    .cand-badge {
+      font-size: 9px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-family: var(--mono);
+      text-align: center;
+    }
+
+    .badge-crit {
+      background: rgba(255, 213, 79, .15);
+      color: var(--gold);
+      border: 1px solid rgba(255, 213, 79, .3);
+    }
+
+    .badge-nocrit {
+      background: rgba(79, 195, 247, .08);
+      color: var(--text3);
+      border: 1px solid var(--border);
+    }
+
+    .cand-xor {
+      font-size: 11px;
+      color: var(--purple);
+      font-family: var(--mono);
+      text-align: right;
+    }
+
+    /* Character select */
+    .char-select {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .char-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-family: var(--mono);
+      color: var(--text2);
+      background: var(--surface2);
+      transition: all .12s;
+    }
+
+    .char-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .char-btn.active {
+      border-color: var(--gold);
+      background: rgba(255, 213, 79, .1);
+      color: var(--gold);
+    }
+
+    select,
+    input[type=number],
+    input[type=text] {
+      padding: 7px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 5px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12px;
+      outline: none;
+      width: 100%;
+    }
+
+    /* Log form */
+    .log-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .field-label {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 4px;
+    }
+
+    .sub-pills {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin: 6px 0;
+    }
+
+    .sub-pill {
+      padding: 4px 10px;
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      font-family: var(--mono);
+      color: var(--text2);
+      background: var(--surface2);
+      transition: all .1s;
+      user-select: none;
+    }
+
+    .sub-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .sub-pill.on {
+      border-color: var(--green);
+      background: rgba(105, 240, 174, .12);
+      color: var(--green);
+    }
+
+    /* Results */
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .result-table th {
+      text-align: left;
+      padding: 7px 10px;
+      color: var(--text3);
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-size: 9px;
+    }
+
+    .result-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text2);
+      vertical-align: top;
+    }
+
+    .result-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .match-crit {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .match-junk {
+      color: var(--red);
+    }
+
+    .analysis-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .analysis-box .key {
+      color: var(--accent);
+    }
+
+    .analysis-box .val {
+      color: var(--text);
+    }
+
+    .analysis-box .finding {
+      color: var(--gold);
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      transition: all .12s;
+      border: 1px solid;
+    }
+
+    .btn-primary {
+      background: rgba(79, 195, 247, .1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: rgba(79, 195, 247, .2);
+    }
+
+    .btn-gold {
+      background: rgba(255, 213, 79, .08);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .btn-gold:hover {
+      background: rgba(255, 213, 79, .15);
+    }
+
+    .btn-green {
+      background: rgba(105, 240, 174, .08);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .btn-green:hover {
+      background: rgba(105, 240, 174, .15);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 20px;
+      color: var(--text3);
+      font-family: var(--mono);
+      font-size: 11px;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-row label {
+      font-size: 11px;
+      color: var(--text2);
+      font-family: var(--mono);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    input[type=checkbox] {
+      width: 14px;
+      height: 14px;
+    }
+
+    .stat-count {
+      font-size: 10px;
+      color: var(--text3);
+      font-family: var(--mono);
+      margin-left: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="scanline"></div>
+  <div class="container">
+
+    <h1>Relic <span>Upgrade</span> Research</h1>
+    <p class="subtitle">// upgrade substat seed research tool — uid + character analysis</p>
+
+    <!-- STEP 1: LOAD RELICS -->
+    <div class="panel">
+      <div class="panel-title">Step 1 — Load Your Relics</div>
+      <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+        <div style="font-size:14px;color:var(--accent);">[ DROP archive_output JSON HERE ]</div>
+        <p>From Reliquary Archiver · click or drag to load</p>
+      </div>
+      <input type="file" id="file-input" accept=".json" onchange="loadFile(event)">
+      <div id="load-status" style="font-size:11px;color:var(--text3);font-family:var(--mono);"></div>
+    </div>
+
+    <!-- STEP 2: PICK TEST CANDIDATES -->
+    <div class="panel" id="candidates-panel" style="display:none;">
+      <div class="panel-title">Step 2 — Pick Test Relics</div>
+      <p style="font-size:11px;color:var(--text2);font-family:var(--mono);margin-bottom:12px;">
+        These are your unupgraded 5★ relics with 4 substats. Relics in the same group share identical substat
+        composition.
+        Pick 2-3 from the same group to test — upgrade each on a different character and log the result below.
+      </p>
+      <div class="filter-row">
+        <label><input type="checkbox" id="filter-crit" checked onchange="renderCandidates()"> Has crit sub</label>
+        <label><input type="checkbox" id="filter-groups" checked onchange="renderCandidates()"> Same-group only
+          (3+)</label>
+        <span class="stat-count" id="cand-count"></span>
+      </div>
+      <div class="cand-grid" id="cand-grid"></div>
+    </div>
+
+    <!-- STEP 3: LOG UPGRADE RESULT -->
+    <div class="panel" id="log-panel" style="display:none;">
+      <div class="panel-title">Step 3 — Log Each Upgrade</div>
+      <p style="font-size:11px;color:var(--text2);font-family:var(--mono);margin-bottom:12px;">
+        Take a test relic to +3 on one character. Log which substat got boosted. Repeat on a different character with a
+        different relic from the same group.
+      </p>
+
+      <div style="margin-bottom:10px;">
+        <div class="field-label">Selected Relic</div>
+        <div id="selected-relic-display"
+          style="font-size:12px;color:var(--gold);font-family:var(--mono);padding:8px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;">
+          No relic selected — click one above
+        </div>
+      </div>
+
+      <div class="log-grid">
+        <div>
+          <div class="field-label">Character Equipping</div>
+          <select id="log-char">
+            <option value="">— select character —</option>
+          </select>
+        </div>
+        <div>
+          <div class="field-label">Enhancement Level</div>
+          <select id="log-level">
+            <option value="3">+3 (first roll)</option>
+            <option value="6">+6</option>
+            <option value="9">+9</option>
+            <option value="12">+12</option>
+            <option value="15">+15</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-label">Which substat got boosted?</div>
+      <div class="sub-pills" id="boost-pills"></div>
+
+      <div style="margin-top:10px;">
+        <div class="field-label">Notes (optional)</div>
+        <input type="text" id="log-notes" placeholder="e.g. ran twice same char — same result">
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-green" onclick="logUpgrade()">Log this upgrade</button>
+        <button class="btn btn-primary" onclick="exportResults()">Export .txt</button>
+        <button class="btn" style="border-color:var(--red);color:var(--red);" onclick="clearLogs()">Clear logs</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: ANALYSIS -->
+    <div class="panel" id="analysis-panel" style="display:none;">
+      <div class="panel-title">Step 4 — Live Analysis</div>
+      <div id="analysis-content"></div>
+      <table class="result-table" style="margin-top:14px;">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Relic UID</th>
+            <th>Substats</th>
+            <th>Character</th>
+            <th>+Level</th>
+            <th>Boosted stat</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="log-body"></tbody>
+      </table>
+    </div>
+
+  </div>
+  <script>
+    const CHARS_HSR = [
+      { id: 1001, name: 'March 7th' }, { id: 1002, name: 'Dan Heng' }, { id: 1003, name: 'Himeko' }, { id: 1004, name: 'Welt' },
+      { id: 1005, name: 'Kafka' }, { id: 1006, name: 'Silver Wolf' }, { id: 1008, name: 'Arlan' }, { id: 1009, name: 'Asta' },
+      { id: 1101, name: 'Bronya' }, { id: 1102, name: 'Seele' }, { id: 1103, name: 'Serval' }, { id: 1104, name: 'Gepard' },
+      { id: 1105, name: 'Natasha' }, { id: 1106, name: 'Pela' }, { id: 1107, name: 'Clara' }, { id: 1108, name: 'Sampo' },
+      { id: 1109, name: 'Hook' }, { id: 1110, name: 'Lynx' }, { id: 1111, name: 'Luka' }, { id: 1112, name: 'Topaz' },
+      { id: 1201, name: 'Qingque' }, { id: 1202, name: 'Tingyun' }, { id: 1203, name: 'Luocha' }, { id: 1204, name: 'Jing Yuan' },
+      { id: 1205, name: 'Blade' }, { id: 1206, name: 'Sushang' }, { id: 1207, name: 'Yukong' }, { id: 1208, name: 'Fu Xuan' },
+      { id: 1209, name: 'Yanqing' }, { id: 1210, name: 'Guinaifen' }, { id: 1211, name: 'Bailu' }, { id: 1212, name: 'Jingliu' },
+      { id: 1213, name: 'IL Dan Heng' }, { id: 1214, name: 'Xueyi' }, { id: 1215, name: 'Hanya' }, { id: 1217, name: 'Huohuo' },
+      { id: 1218, name: 'Jiaoqiu' }, { id: 1220, name: 'Feixiao' }, { id: 1221, name: 'Yunli' }, { id: 1222, name: 'Lingsha' },
+      { id: 1223, name: 'Moze' }, { id: 1225, name: 'Fugue' }, { id: 1302, name: 'Argenti' }, { id: 1303, name: 'Ruan Mei' },
+      { id: 1304, name: 'Aventurine' }, { id: 1305, name: 'Dr. Ratio' }, { id: 1306, name: 'Sparkle' }, { id: 1307, name: 'Black Swan' },
+      { id: 1308, name: 'Acheron' }, { id: 1309, name: 'Robin' }, { id: 1310, name: 'Firefly' }, { id: 1311, name: 'Screwllum' },
+      { id: 1312, name: 'Misha' }, { id: 1313, name: 'Sunday' }, { id: 1314, name: 'Jade' }, { id: 1315, name: 'Boothill' },
+      { id: 1317, name: 'Rappa' }, { id: 1319, name: 'Mr. Reca' }, { id: 1321, name: 'The Dahlia' }, { id: 1401, name: 'The Herta' },
+      { id: 1402, name: 'Aglaea' }, { id: 1403, name: 'Tribbie' }, { id: 1404, name: 'Mydei' }, { id: 1405, name: 'Anaxa' },
+      { id: 1406, name: 'Cipher' }, { id: 1407, name: 'Castorice' }, { id: 1408, name: 'Phainon' }, { id: 1409, name: 'Hyacine' },
+      { id: 1410, name: 'Hysilens' }, { id: 1413, name: 'Evernight' }, { id: 1414, name: 'Dan Heng PT' }, { id: 1415, name: 'Cyrene' },
+      { id: 1501, name: 'Sparxie' }, { id: 1502, name: 'Yao Guang' }, { id: 1503, name: 'Pearl' },
+      { id: 8001, name: 'TB Dest M' }, { id: 8002, name: 'TB Dest F' }, { id: 8005, name: 'TB Harm M' }, { id: 8006, name: 'TB Harm F' },
+      { id: 8007, name: 'TB Rem M' }, { id: 8008, name: 'TB Rem F' },
+    ];
+
+    const SUBSTATS = ['HP', 'ATK', 'DEF', 'HP_', 'ATK_', 'DEF_', 'SPD', 'CRIT Rate_', 'CRIT DMG_', 'Effect Hit Rate_', 'Effect RES_', 'Break Effect_'];
+    const SUB_LABELS = { 'HP': 'HP flat', 'ATK': 'ATK flat', 'DEF': 'DEF flat', 'HP_': 'HP%', 'ATK_': 'ATK%', 'DEF_': 'DEF%', 'SPD': 'SPD', 'CRIT Rate_': 'Crit Rate', 'CRIT DMG_': 'Crit DMG', 'Effect Hit Rate_': 'Effect Hit', 'Effect RES_': 'Effect RES', 'Break Effect_': 'Break Eff' };
+
+    let relicData = [];
+    let groups = {};
+    let selectedRelic = null;
+    let upgradeLogs = [];
+
+    // Populate char select
+    const charSel = document.getElementById('log-char');
+    CHARS_HSR.sort((a, b) => a.name.localeCompare(b.name)).forEach(c => {
+      const o = document.createElement('option');
+      o.value = c.id;
+      o.textContent = `${c.name} (${c.id})`;
+      charSel.appendChild(o);
+    });
+
+    // Drag and drop
+    const ua = document.getElementById('upload-area');
+    ua.addEventListener('dragover', e => { e.preventDefault(); ua.classList.add('drag'); });
+    ua.addEventListener('dragleave', () => ua.classList.remove('drag'));
+    ua.addEventListener('drop', e => { e.preventDefault(); ua.classList.remove('drag'); const f = e.dataTransfer.files[0]; if (f) processFile(f); });
+
+    function loadFile(e) { const f = e.target.files[0]; if (f) processFile(f); }
+    function processFile(f) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (!data.relics) { document.getElementById('load-status').textContent = 'Error: no relics found in file'; return; }
+          relicData = data.relics;
+
+          // if characters in file, add to dropdown
+          if (data.characters) {
+            data.characters.forEach(c => {
+              if (!CHARS_HSR.find(x => x.id == c.id)) {
+                const o = document.createElement('option');
+                o.value = c.id;
+                o.textContent = `${c.name} (${c.id})`;
+                charSel.appendChild(o);
+              }
+            });
+          }
+
+          buildGroups();
+          document.getElementById('load-status').textContent = `✓ Loaded ${relicData.length} relics`;
+          document.getElementById('candidates-panel').style.display = '';
+          document.getElementById('log-panel').style.display = '';
+          document.getElementById('analysis-panel').style.display = '';
+          renderCandidates();
+        } catch (err) { document.getElementById('load-status').textContent = 'Error parsing JSON: ' + err.message; }
+      };
+      reader.readAsText(f);
+    }
+
+    function buildGroups() {
+      groups = {};
+      relicData.forEach(r => {
+        if (r.level !== 0 || r.rarity !== 5 || r.substats.length !== 4) return;
+        const key = r.substats.map(s => s.key).join('|');
+        if (!groups[key]) groups[key] = [];
+        groups[key].push(r);
+      });
+    }
+
+    function renderCandidates() {
+      const filterCrit = document.getElementById('filter-crit').checked;
+      const filterGroups = document.getElementById('filter-groups').checked;
+      const grid = document.getElementById('cand-grid');
+      grid.innerHTML = '';
+
+      let shown = 0;
+      Object.entries(groups).sort((a, b) => b[1].length - a[1].length).forEach(([key, group]) => {
+        if (filterGroups && group.length < 2) return;
+        const subKeys = key.split('|');
+        const hasCrit = subKeys.includes('CRIT Rate_') || subKeys.includes('CRIT DMG_');
+        if (filterCrit && !hasCrit) return;
+
+        // Group header
+        const header = document.createElement('div');
+        header.style.cssText = 'font-size:9px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;padding:6px 0 3px;';
+        header.textContent = `— ${group.length} relics with same substats`;
+        grid.appendChild(header);
+
+        group.forEach(r => {
+          const uid = r._uid;
+          const charId = document.getElementById('log-char').value;
+          const xorVal = charId ? parseInt(uid) ^ parseInt(charId) : null;
+          const d = document.createElement('div');
+          d.className = 'cand-row' + (selectedRelic?._uid === uid ? ' selected' : '');
+          d.innerHTML = `
+        <div class="cand-uid">uid ${uid}</div>
+        <div class="cand-subs"><span style="color:var(--orange);font-size:10px;">${r.name}</span><br>${subKeys.map(k => SUB_LABELS[k] || k).join(' · ')}</div>
+        <div class="cand-info">${r.slot} · ${r.mainstat}</div>
+        <div class="cand-badge ${hasCrit ? 'badge-crit' : 'badge-nocrit'}">${hasCrit ? 'has crit' : 'no crit'}</div>
+        <div class="cand-xor">${xorVal !== null ? 'uid^char=' + xorVal : ''}</div>`;
+          d.addEventListener('click', () => { selectedRelic = r; renderCandidates(); showSelectedRelic(r, subKeys); });
+          grid.appendChild(d);
+          shown++;
+        });
+      });
+      document.getElementById('cand-count').textContent = `${shown} relics shown`;
+    }
+
+    function showSelectedRelic(r, subKeys) {
+      document.getElementById('selected-relic-display').textContent =
+        `uid ${r._uid}  ·  ${r.name}  ·  ${r.slot}  ·  ${r.mainstat}  ·  [${subKeys.map(k => SUB_LABELS[k] || k).join(', ')}]`;
+
+      // Build boost pills from this relic's substats
+      const pills = document.getElementById('boost-pills');
+      pills.innerHTML = '';
+      subKeys.forEach(key => {
+        const p = document.createElement('div');
+        p.className = 'sub-pill';
+        p.textContent = SUB_LABELS[key] || key;
+        p.dataset.key = key;
+        p.addEventListener('click', () => {
+          pills.querySelectorAll('.sub-pill').forEach(x => x.classList.remove('on'));
+          p.classList.add('on');
+        });
+        pills.appendChild(p);
+      });
+    }
+
+    function logUpgrade() {
+      if (!selectedRelic) { alert('Select a relic first'); return; }
+      const charId = document.getElementById('log-char').value;
+      const charName = CHARS_HSR.find(c => c.id == charId)?.name || charId || '?';
+      const level = document.getElementById('log-level').value;
+      const boostedEl = document.querySelector('#boost-pills .sub-pill.on');
+      if (!boostedEl) { alert('Select which substat got boosted'); return; }
+      const boosted = boostedEl.dataset.key;
+      const notes = document.getElementById('log-notes').value.trim();
+
+      const subKeys = selectedRelic.substats.map(s => s.key);
+      const xorUidChar = charId ? parseInt(selectedRelic._uid) ^ parseInt(charId) : null;
+
+      upgradeLogs.push({
+        uid: selectedRelic._uid,
+        subKeys,
+        charId, charName,
+        level, boosted, notes,
+        xorUidChar,
+        ts: new Date().toISOString()
+      });
+
+      document.getElementById('log-notes').value = '';
+      document.querySelector('#boost-pills .sub-pill.on')?.classList.remove('on');
+      renderLogTable();
+      renderAnalysis();
+    }
+
+    function renderLogTable() {
+      const tbody = document.getElementById('log-body');
+      tbody.innerHTML = '';
+      upgradeLogs.forEach((e, i) => {
+        const hasCrit = e.boosted.includes('CRIT');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td style="color:var(--gold);font-family:var(--mono);">${e.uid}</td>
+      <td style="font-size:10px;">${e.subKeys.map(k => SUB_LABELS[k] || k).join(' · ')}</td>
+      <td>${e.charName} <span style="color:var(--text3);font-size:9px;">(${e.charId})</span></td>
+      <td style="color:var(--accent)">+${e.level}</td>
+      <td class="${hasCrit ? 'match-crit' : 'match-junk'}">${SUB_LABELS[e.boosted] || e.boosted}</td>
+      <td style="font-size:10px;color:var(--text3)">${e.notes || ''}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderAnalysis() {
+      const el = document.getElementById('analysis-content');
+      if (!upgradeLogs.length) { el.innerHTML = '<div class="empty">Log upgrades to see analysis.</div>'; return; }
+
+      // Group by same uid
+      const byUid = {};
+      upgradeLogs.forEach(e => {
+        if (!byUid[e.uid]) byUid[e.uid] = [];
+        byUid[e.uid].push(e);
+      });
+
+      // Group by same substat composition
+      const byComp = {};
+      upgradeLogs.forEach(e => {
+        const key = e.subKeys.sort().join('|');
+        if (!byComp[key]) byComp[key] = [];
+        byComp[key].push(e);
+      });
+
+      let html = '<div class="analysis-box">';
+
+      // Key finding: same uid, different char — same or different boost?
+      const uidTests = Object.entries(byUid).filter(([, v]) => v.length >= 2);
+      if (uidTests.length) {
+        html += `<div class="finding">★ SAME UID, DIFFERENT CHAR TESTS</div>`;
+        uidTests.forEach(([uid, entries]) => {
+          const boosts = entries.map(e => e.boosted);
+          const allSame = boosts.every(b => b === boosts[0]);
+          html += `<div style="margin-top:6px;">
+        <span class="key">uid ${uid}</span> — ${entries.length} upgrades — 
+        <span style="color:${allSame ? 'var(--green)' : 'var(--red)'}">
+          ${allSame ? 'SAME boost all chars → UID drives it' : 'DIFFERENT boosts → char ID or ms noise'}
+        </span><br>
+        <span class="val">${entries.map(e => `${e.charName}→${SUB_LABELS[e.boosted] || e.boosted}`).join('  |  ')}</span>
+      </div>`;
+        });
+      }
+
+      // Same composition, different uids — same or different boost?
+      const compTests = Object.entries(byComp).filter(([, v]) => v.length >= 2 && new Set(v.map(x => x.uid)).size >= 2);
+      if (compTests.length) {
+        html += `<div class="finding" style="margin-top:12px;">★ SAME SUBSTATS, DIFFERENT UID TESTS</div>`;
+        compTests.forEach(([comp, entries]) => {
+          const byUidGroup = {};
+          entries.forEach(e => { if (!byUidGroup[e.uid]) byUidGroup[e.uid] = []; byUidGroup[e.uid].push(e); });
+          const uniqueUids = Object.keys(byUidGroup);
+          const boostsByUid = uniqueUids.map(u => byUidGroup[u].map(e => e.boosted)[0]);
+          const allSame = boostsByUid.every(b => b === boostsByUid[0]);
+          const subNames = comp.split('|').map(k => SUB_LABELS[k] || k).join(', ');
+          html += `<div style="margin-top:6px;">
+        <span class="key">[${subNames}]</span> — ${uniqueUids.length} different uids<br>
+        <span style="color:${allSame ? 'var(--orange)' : 'var(--green)'}">
+          ${allSame ? 'Same boost despite different UID → composition may matter' : 'Different boosts per UID → UID is in the seed'}
+        </span><br>
+        <span class="val">${uniqueUids.map(u => `uid${u}→${SUB_LABELS[byUidGroup[u][0].boosted] || byUidGroup[u][0].boosted}`).join('  |  ')}</span>
+      </div>`;
+        });
+      }
+
+      // XOR uid^char analysis
+      const xorGroups = {};
+      upgradeLogs.filter(e => e.xorUidChar != null).forEach(e => {
+        const k = e.xorUidChar;
+        if (!xorGroups[k]) xorGroups[k] = [];
+        xorGroups[k].push(e);
+      });
+      const sharedXor = Object.entries(xorGroups).filter(([, v]) => v.length >= 2);
+      if (sharedXor.length) {
+        html += `<div class="finding" style="margin-top:12px;">★ SHARED UID^CHAR XOR</div>`;
+        html += `<div style="margin-top:4px;font-size:10px;color:var(--text2);">If same uid^charId XOR = same boosted stat → XOR is the seed input</div>`;
+        sharedXor.forEach(([xorVal, entries]) => {
+          const boosts = entries.map(e => e.boosted);
+          const allSame = boosts.every(b => b === boosts[0]);
+          html += `<div style="margin-top:6px;">
+        <span class="key">XOR ${xorVal}</span> — ${entries.length} tests — 
+        <span style="color:${allSame ? 'var(--green)' : 'var(--red)'}">
+          ${allSame ? 'SAME → XOR hypothesis holds' : 'DIFFERENT → XOR not the full story'}
+        </span><br>
+        <span class="val">${entries.map(e => `uid${e.uid}+${e.charName}→${SUB_LABELS[e.boosted] || e.boosted}`).join('  |  ')}</span>
+      </div>`;
+        });
+      }
+
+      if (!uidTests.length && !compTests.length && !sharedXor.length) {
+        html += `<span class="val">Log 2+ upgrades on same uid or same substat composition to see patterns.</span>`;
+      }
+
+      html += '</div>';
+      el.innerHTML = html;
+    }
+
+    function exportResults() {
+      if (!upgradeLogs.length) { alert('No logs to export'); return; }
+      const lines = ['HSR Relic Upgrade Research Log', '='.repeat(60), 'Exported: ' + new Date().toLocaleString(), ''];
+      lines.push('UPGRADE LOG:', '');
+      upgradeLogs.forEach((e, i) => {
+        lines.push(`RUN #${i + 1}  ${e.ts}`);
+        lines.push(`  UID:     ${e.uid}`);
+        lines.push(`  SUBS:    ${e.subKeys.map(k => SUB_LABELS[k] || k).join(' · ')}`);
+        lines.push(`  CHAR:    ${e.charName} (${e.charId})`);
+        lines.push(`  LEVEL:   +${e.level}`);
+        lines.push(`  BOOSTED: ${SUB_LABELS[e.boosted] || e.boosted}`);
+        if (e.xorUidChar != null) lines.push(`  XOR uid^char: ${e.xorUidChar}`);
+        if (e.notes) lines.push(`  NOTES:   ${e.notes}`);
+        lines.push('');
+      });
+
+      // Summary
+      lines.push('='.repeat(60), 'ANALYSIS SUMMARY', '');
+      const byComp = {};
+      upgradeLogs.forEach(e => { const k = e.subKeys.sort().join('|'); if (!byComp[k]) byComp[k] = []; byComp[k].push(e); });
+      Object.entries(byComp).forEach(([comp, entries]) => {
+        lines.push('Subs: ' + comp.split('|').map(k => SUB_LABELS[k] || k).join(', '));
+        entries.forEach(e => lines.push(`  uid=${e.uid} char=${e.charName}(${e.charId}) +${e.level} → BOOSTED: ${SUB_LABELS[e.boosted] || e.boosted}`));
+        lines.push('');
+      });
+
+      const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'relic_upgrade_research_' + Date.now() + '.txt';
+      a.click();
+    }
+
+    function clearLogs() { if (confirm('Clear all logged upgrades?')) { upgradeLogs = []; renderLogTable(); renderAnalysis(); } }
+
+    // Init analysis view
+    renderAnalysis();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,476 @@
+====================================================================
+  HSR RELIC SEED SIMULATOR — DEBUG LOG v3.0
+  Svarog Tracer Research Tool
+====================================================================
+  Exported : 3/17/2026, 12:52:42 AM
+  Total runs: 10
+====================================================================
+
+[ SECTION 1 — OUTCOME DISTRIBUTION ]
+--------------------------------------------------------------------
+  effect junk                 : 4 (40%)
+  one crit                    : 3 (30%)
+  flat junk                   : 2 (20%)
+  spd one crit                : 1 (10%)
+
+[ SECTION 2 — GLOBAL SUBSTAT FREQUENCY (all relics, all runs) ]
+--------------------------------------------------------------------
+  Total relics logged: 70 across 10 runs
+
+  ATK flat     : ████████████████████  (29/70 = 41%)
+  HP flat      : ████████████████████  (28/70 = 40%)
+  Effect RES   : ████████████████████  (27/70 = 39%)
+  Break Eff    : ████████████████████  (25/70 = 36%)
+  DEF%         : ████████████████████  (24/70 = 34%)
+  DEF flat     : ████████████████████  (23/70 = 33%)
+  HP%          : ████████████████████  (23/70 = 33%)
+  Crit DMG     : ████████████████████  (23/70 = 33%)
+  ATK%         : ████████████████████  (22/70 = 31%)
+  Effect Hit   : ████████████████████  (22/70 = 31%)
+  Crit Rate    : ████████████████████  (21/70 = 30%)
+  SPD          : █████████████░░░░░░░  (13/70 = 19%)
+
+[ SECTION 3 — SLOT ORDER ANALYSIS ]
+--------------------------------------------------------------------
+  Same 4 chars, different slot order = different ID array = different seed
+
+  Array: [1501-1306-1410-1414]  (1 run(s))
+  Order: S1:Sparxie | S2:Sparkle | S3:Hysilens | S4:Dan Heng • PT
+  Substat rates: ATK flat 57%  DEF flat 57%  HP flat 43%  HP% 43%  Effect RES 43%  DEF% 29%
+  Outcomes: flat-junk
+
+  Array: [1501-1307-1409-1414]  (1 run(s))
+  Order: S1:Sparxie | S2:Black Swan | S3:Hyacine | S4:Dan Heng • PT
+  Substat rates: Break Eff 71%  HP flat 43%  ATK flat 43%  ATK% 43%  DEF% 43%  HP% 29%
+  Outcomes: flat-junk
+
+  Array: [1502-1306-1409-1414]  (1 run(s))
+  Order: S1:Yao Guang | S2:Sparkle | S3:Hyacine | S4:Dan Heng • PT
+  Substat rates: ATK flat 57%  Crit DMG 57%  DEF flat 43%  DEF% 43%  Effect RES 43%  Break Eff 43%
+  Outcomes: one-crit
+
+  Array: [1502-1306-1409-1413]  (1 run(s))
+  Order: S1:Yao Guang | S2:Sparkle | S3:Hyacine | S4:Evernight
+  Substat rates: Effect RES 57%  HP flat 43%  ATK flat 43%  ATK% 43%  Crit Rate 43%  Effect Hit 43%
+  Outcomes: effect-junk
+
+  Array: [1502-1306-1413-1409]  (1 run(s))
+  Order: S1:Yao Guang | S2:Sparkle | S3:Evernight | S4:Hyacine
+  Substat rates: ATK flat 57%  DEF flat 57%  Effect Hit 57%  HP flat 43%  ATK% 43%  HP% 29%
+  Outcomes: effect-junk
+
+  Array: [1502-1304-1409-1415]  (1 run(s))
+  Order: S1:Yao Guang | S2:Aventurine | S3:Hyacine | S4:Cyrene
+  Substat rates: HP flat 57%  Effect RES 57%  HP% 43%  ATK% 43%  DEF% 43%  Crit Rate 43%
+  Outcomes: effect-junk
+
+  Array: [1502-1305-1410-1413]  (1 run(s))
+  Order: S1:Yao Guang | S2:Dr. Ratio | S3:Hysilens | S4:Evernight
+  Substat rates: ATK% 86%  HP% 43%  Crit DMG 43%  Effect RES 43%  HP flat 29%  SPD 29%
+  Outcomes: one-crit
+
+  Array: [1502-1305-1413-1410]  (1 run(s))
+  Order: S1:Yao Guang | S2:Dr. Ratio | S3:Evernight | S4:Hysilens
+  Substat rates: HP flat 57%  Crit DMG 57%  ATK flat 43%  DEF flat 43%  Break Eff 43%  HP% 29%
+  Outcomes: one-crit
+
+  Array: [1413-1410-1305-1502]  (2 run(s))
+  Order: S1:Evernight | S2:Hysilens | S3:Dr. Ratio | S4:Yao Guang
+  Substat rates: HP% 50%  DEF% 50%  ATK flat 36%  Crit Rate 36%  Effect Hit 36%  Effect RES 36%
+  Outcomes: spd-one-crit, effect-junk
+
+[ SECTION 4 — CHARACTER CRIT CORRELATION ]
+--------------------------------------------------------------------
+  Which character IDs in the team correlate with crit/SPD drops?
+
+  Yao Guang        ID:1502   CR:30%   CD:36%   SPD:20%    (8 runs / 56 relics)
+  Evernight        ID:1413   CR:31%   CD:31%   SPD:21%    (6 runs / 42 relics)
+  Hyacine          ID:1409   CR:29%   CD:34%   SPD:11%    (5 runs / 35 relics)
+  Hysilens         ID:1410   CR:31%   CD:31%   SPD:26%    (5 runs / 35 relics)
+  Dr. Ratio        ID:1305   CR:32%   CD:36%   SPD:25%    (4 runs / 28 relics)
+  Sparkle          ID:1306   CR:25%   CD:29%   SPD:18%    (4 runs / 28 relics)
+  Dan Heng • PT    ID:1414   CR:24%   CD:33%   SPD:14%    (3 runs / 21 relics)
+  Sparxie          ID:1501   CR:29%   CD:21%   SPD:14%    (2 runs / 14 relics)
+  Aventurine       ID:1304   CR:43%   CD:43%   SPD:14%    (1 runs / 7 relics)
+  Black Swan       ID:1307   CR:29%   CD:29%   SPD:0%     (1 runs / 7 relics)
+  Cyrene           ID:1415   CR:43%   CD:43%   SPD:14%    (1 runs / 7 relics)
+
+[ SECTION 5 — PATH COMPOSITION ANALYSIS ]
+--------------------------------------------------------------------
+  paths: Elat · Harm · Nihil · Pres   elems: Fire · Quantum · Physical — 1 run(s)
+  Top: ATK flat 57%  DEF flat 57%  HP flat 43%  HP% 43%  Effect RES 43%
+
+  paths: Elat · Nihil · Remem · Pres   elems: Fire · Wind · Physical — 1 run(s)
+  Top: Break Eff 71%  HP flat 43%  ATK flat 43%  ATK% 43%  DEF% 43%
+
+  paths: Elat · Harm · Remem · Pres   elems: Physical · Quantum · Wind — 1 run(s)
+  Top: ATK flat 57%  Crit DMG 57%  DEF flat 43%  DEF% 43%  Effect RES 43%
+
+  paths: Elat · Harm · Rememx2   elems: Physical · Quantum · Wind · Ice — 1 run(s)
+  Top: Effect RES 57%  HP flat 43%  ATK flat 43%  ATK% 43%  Crit Rate 43%
+
+  paths: Elat · Harm · Rememx2   elems: Physical · Quantum · Ice · Wind — 1 run(s)
+  Top: ATK flat 57%  DEF flat 57%  Effect Hit 57%  HP flat 43%  ATK% 43%
+
+  paths: Elat · Pres · Rememx2   elems: Physical · Imaginary · Wind · Ice — 1 run(s)
+  Top: HP flat 57%  Effect RES 57%  HP% 43%  ATK% 43%  DEF% 43%
+
+  paths: Elat · Hunt · Nihil · Remem   elems: Physical · Imaginary · Ice — 1 run(s)
+  Top: ATK% 86%  HP% 43%  Crit DMG 43%  Effect RES 43%  HP flat 29%
+
+  paths: Elat · Hunt · Remem · Nihil   elems: Physical · Imaginary · Ice — 1 run(s)
+  Top: HP flat 57%  Crit DMG 57%  ATK flat 43%  DEF flat 43%  Break Eff 43%
+
+  paths: Remem · Nihil · Hunt · Elat   elems: Ice · Physical · Imaginary — 2 run(s)
+  Top: HP% 50%  DEF% 50%  ATK flat 36%  Crit Rate 36%  Effect Hit 36%
+
+[ SECTION 6 — CAVERN ANALYSIS ]
+--------------------------------------------------------------------
+  Path of Possession — 10 run(s)
+  Top: ATK flat 41%  HP flat 40%  Effect RES 39%  Break Eff 36%  DEF% 34%
+
+[ SECTION 7 — ALL RUNS FULL DETAIL ]
+--------------------------------------------------------------------
+
+  RUN #001  2026-03-16T22:10:39.652Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Sparxie  S2:Sparkle  S3:Hysilens  S4:Dan Heng • PT
+  ID ARRAY   : [1501-1306-1410-1414]
+  PATHS      : paths: Elat · Harm · Nihil · Pres   elems: Fire · Quantum · Physical
+  TIME       : 37s
+  OUTCOME    : flat junk
+  AVG TOP 4  : ATK flat + DEF flat + HP flat + HP%
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: Effect Hit  ·  DEF%  ·  HP%  ·  DEF flat
+    Relic 2 [Chest ]: ATK flat  ·  DEF flat  ·  Effect RES  ·  Break Eff
+    Relic 3 [Hands ]: DEF flat  ·  HP flat  ·  Crit Rate  ·  ATK%
+    Relic 4 [Boots ]: HP flat  ·  HP%  ·  DEF%  ·  Effect RES
+    Relic 5 [Chest ]: HP flat  ·  Effect RES  ·  SPD  ·  ATK flat
+    Relic 6 [Boots ]: ATK flat  ·  Effect Hit  ·  Crit DMG  ·  HP%
+    Relic 7 [Boots ]: DEF flat  ·  SPD  ·  Crit Rate  ·  ATK flat
+
+  SUBSTAT FREQUENCY THIS RUN:
+    ATK flat     : 4/7 relics (57%)
+    DEF flat     : 4/7 relics (57%)
+    HP flat      : 3/7 relics (43%)
+    HP%          : 3/7 relics (43%)
+    Effect RES   : 3/7 relics (43%)
+    DEF%         : 2/7 relics (29%)
+    SPD          : 2/7 relics (29%)
+    Crit Rate    : 2/7 relics (29%)
+    Effect Hit   : 2/7 relics (29%)
+    ATK%         : 1/7 relics (14%)
+    Crit DMG     : 1/7 relics (14%)
+    Break Eff    : 1/7 relics (14%)
+
+  RUN #002  2026-03-16T22:15:18.510Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Sparxie  S2:Black Swan  S3:Hyacine  S4:Dan Heng • PT
+  ID ARRAY   : [1501-1307-1409-1414]
+  PATHS      : paths: Elat · Nihil · Remem · Pres   elems: Fire · Wind · Physical
+  TIME       : 57s
+  OUTCOME    : flat junk
+  AVG TOP 4  : Break Eff + HP flat + ATK flat + ATK%
+
+  RELICS (7 pieces):
+    Relic 1 [Boots ]: HP flat  ·  ATK%  ·  Crit DMG  ·  ATK flat
+    Relic 2 [Boots ]: HP flat  ·  ATK flat  ·  ATK%  ·  Effect RES
+    Relic 3 [Chest ]: ATK flat  ·  Break Eff  ·  HP flat  ·  ATK%
+    Relic 4 [Chest ]: DEF%  ·  Break Eff  ·  Crit Rate  ·  Effect RES
+    Relic 5 [Chest ]: DEF flat  ·  DEF%  ·  Effect Hit  ·  Break Eff
+    Relic 6 [Head  ]: Break Eff  ·  HP%  ·  Crit Rate  ·  Crit DMG
+    Relic 7 [Chest ]: DEF%  ·  Effect Hit  ·  HP%  ·  Break Eff
+
+  SUBSTAT FREQUENCY THIS RUN:
+    Break Eff    : 5/7 relics (71%)
+    HP flat      : 3/7 relics (43%)
+    ATK flat     : 3/7 relics (43%)
+    ATK%         : 3/7 relics (43%)
+    DEF%         : 3/7 relics (43%)
+    HP%          : 2/7 relics (29%)
+    Crit Rate    : 2/7 relics (29%)
+    Crit DMG     : 2/7 relics (29%)
+    Effect Hit   : 2/7 relics (29%)
+    Effect RES   : 2/7 relics (29%)
+    DEF flat     : 1/7 relics (14%)
+
+  RUN #003  2026-03-16T22:20:54.776Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Yao Guang  S2:Sparkle  S3:Hyacine  S4:Dan Heng • PT
+  ID ARRAY   : [1502-1306-1409-1414]
+  PATHS      : paths: Elat · Harm · Remem · Pres   elems: Physical · Quantum · Wind
+  TIME       : 57s
+  OUTCOME    : one crit
+  AVG TOP 4  : ATK flat + Crit DMG + DEF flat + DEF%
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: DEF flat  ·  Crit DMG  ·  Effect RES  ·  ATK flat
+    Relic 2 [Chest ]: ATK flat  ·  Crit DMG  ·  DEF flat  ·  Effect Hit
+    Relic 3 [Head  ]: DEF%  ·  Effect RES  ·  SPD  ·  Break Eff
+    Relic 4 [Hands ]: Crit Rate  ·  Effect Hit  ·  Effect RES  ·  HP flat
+    Relic 5 [Boots ]: HP flat  ·  DEF%  ·  Crit DMG  ·  ATK flat
+    Relic 6 [Head  ]: ATK flat  ·  DEF%  ·  ATK%  ·  Break Eff
+    Relic 7 [Head  ]: Crit DMG  ·  HP%  ·  DEF flat  ·  Break Eff
+
+  SUBSTAT FREQUENCY THIS RUN:
+    ATK flat     : 4/7 relics (57%)
+    Crit DMG     : 4/7 relics (57%)
+    DEF flat     : 3/7 relics (43%)
+    DEF%         : 3/7 relics (43%)
+    Effect RES   : 3/7 relics (43%)
+    Break Eff    : 3/7 relics (43%)
+    HP flat      : 2/7 relics (29%)
+    Effect Hit   : 2/7 relics (29%)
+    HP%          : 1/7 relics (14%)
+    ATK%         : 1/7 relics (14%)
+    SPD          : 1/7 relics (14%)
+    Crit Rate    : 1/7 relics (14%)
+
+  RUN #004  2026-03-16T22:31:19.546Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Yao Guang  S2:Sparkle  S3:Hyacine  S4:Evernight
+  ID ARRAY   : [1502-1306-1409-1413]
+  PATHS      : paths: Elat · Harm · Rememx2   elems: Physical · Quantum · Wind · Ice
+  TIME       : 46s
+  OUTCOME    : effect junk
+  AVG TOP 4  : Effect RES + HP flat + ATK flat + ATK%
+
+  RELICS (7 pieces):
+    Relic 1 [Chest ]: HP flat  ·  DEF flat  ·  Break Eff  ·  Crit Rate
+    Relic 2 [Boots ]: ATK flat  ·  Break Eff  ·  Crit Rate  ·  Crit DMG
+    Relic 3 [Chest ]: Crit Rate  ·  SPD  ·  Effect RES  ·  HP flat
+    Relic 4 [Boots ]: Effect Hit  ·  DEF flat  ·  HP flat  ·  ATK%
+    Relic 5 [Head  ]: ATK flat  ·  Effect RES  ·  DEF%  ·  ATK%
+    Relic 6 [Hands ]: Effect Hit  ·  Effect RES  ·  DEF%  ·  ATK%
+    Relic 7 [Boots ]: Effect RES  ·  Effect Hit  ·  Break Eff  ·  ATK flat
+
+  SUBSTAT FREQUENCY THIS RUN:
+    Effect RES   : 4/7 relics (57%)
+    HP flat      : 3/7 relics (43%)
+    ATK flat     : 3/7 relics (43%)
+    ATK%         : 3/7 relics (43%)
+    Crit Rate    : 3/7 relics (43%)
+    Effect Hit   : 3/7 relics (43%)
+    Break Eff    : 3/7 relics (43%)
+    DEF flat     : 2/7 relics (29%)
+    DEF%         : 2/7 relics (29%)
+    SPD          : 1/7 relics (14%)
+    Crit DMG     : 1/7 relics (14%)
+
+  RUN #005  2026-03-16T22:37:09.478Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Yao Guang  S2:Sparkle  S3:Evernight  S4:Hyacine
+  ID ARRAY   : [1502-1306-1413-1409]
+  PATHS      : paths: Elat · Harm · Rememx2   elems: Physical · Quantum · Ice · Wind
+  TIME       : 42s
+  OUTCOME    : effect junk
+  AVG TOP 4  : ATK flat + DEF flat + Effect Hit + HP flat
+
+  RELICS (7 pieces):
+    Relic 1 [Boots ]: DEF flat  ·  Effect RES  ·  Effect Hit  ·  Break Eff
+    Relic 2 [Chest ]: ATK%  ·  SPD  ·  Effect Hit  ·  Break Eff
+    Relic 3 [Head  ]: ATK flat  ·  ATK%  ·  DEF flat  ·  HP%
+    Relic 4 [Chest ]: HP flat  ·  ATK flat  ·  Effect Hit  ·  Crit DMG
+    Relic 5 [Chest ]: DEF flat  ·  HP%  ·  ATK flat  ·  Crit DMG
+    Relic 6 [Boots ]: HP flat  ·  ATK flat  ·  DEF flat  ·  DEF%
+    Relic 7 [Boots ]: ATK%  ·  Crit Rate  ·  HP flat  ·  Effect Hit
+
+  SUBSTAT FREQUENCY THIS RUN:
+    ATK flat     : 4/7 relics (57%)
+    DEF flat     : 4/7 relics (57%)
+    Effect Hit   : 4/7 relics (57%)
+    HP flat      : 3/7 relics (43%)
+    ATK%         : 3/7 relics (43%)
+    HP%          : 2/7 relics (29%)
+    Crit DMG     : 2/7 relics (29%)
+    Break Eff    : 2/7 relics (29%)
+    DEF%         : 1/7 relics (14%)
+    SPD          : 1/7 relics (14%)
+    Crit Rate    : 1/7 relics (14%)
+    Effect RES   : 1/7 relics (14%)
+
+  RUN #006  2026-03-16T22:41:42.868Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Yao Guang  S2:Aventurine  S3:Hyacine  S4:Cyrene
+  ID ARRAY   : [1502-1304-1409-1415]
+  PATHS      : paths: Elat · Pres · Rememx2   elems: Physical · Imaginary · Wind · Ice
+  TIME       : 53s
+  OUTCOME    : effect junk
+  AVG TOP 4  : HP flat + Effect RES + HP% + ATK%
+
+  RELICS (7 pieces):
+    Relic 1 [Boots ]: HP%  ·  Effect RES  ·  Crit Rate  ·  ATK flat
+    Relic 2 [Boots ]: Crit DMG  ·  SPD  ·  HP flat  ·  Effect RES
+    Relic 3 [Head  ]: Break Eff  ·  DEF%  ·  HP%  ·  ATK flat
+    Relic 4 [Hands ]: HP flat  ·  DEF%  ·  Crit DMG  ·  ATK%
+    Relic 5 [Hands ]: HP flat  ·  Crit Rate  ·  Crit DMG  ·  ATK%
+    Relic 6 [Hands ]: Effect RES  ·  Crit Rate  ·  DEF%  ·  HP%
+    Relic 7 [Chest ]: Effect RES  ·  DEF flat  ·  HP flat  ·  ATK%
+
+  SUBSTAT FREQUENCY THIS RUN:
+    HP flat      : 4/7 relics (57%)
+    Effect RES   : 4/7 relics (57%)
+    HP%          : 3/7 relics (43%)
+    ATK%         : 3/7 relics (43%)
+    DEF%         : 3/7 relics (43%)
+    Crit Rate    : 3/7 relics (43%)
+    Crit DMG     : 3/7 relics (43%)
+    ATK flat     : 2/7 relics (29%)
+    DEF flat     : 1/7 relics (14%)
+    SPD          : 1/7 relics (14%)
+    Break Eff    : 1/7 relics (14%)
+
+  RUN #007  2026-03-16T22:44:28.378Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Yao Guang  S2:Dr. Ratio  S3:Hysilens  S4:Evernight
+  ID ARRAY   : [1502-1305-1410-1413]
+  PATHS      : paths: Elat · Hunt · Nihil · Remem   elems: Physical · Imaginary · Ice
+  TIME       : 35s
+  OUTCOME    : one crit
+  AVG TOP 4  : ATK% + HP% + Crit DMG + Effect RES
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: Crit Rate  ·  Crit DMG  ·  Effect RES  ·  Break Eff
+    Relic 2 [Head  ]: HP flat  ·  HP%  ·  ATK%  ·  Effect Hit
+    Relic 3 [Head  ]: Crit Rate  ·  SPD  ·  ATK%  ·  Effect RES
+    Relic 4 [Head  ]: ATK%  ·  Effect Hit  ·  Effect RES  ·  HP%
+    Relic 5 [Head  ]: DEF flat  ·  ATK%  ·  Crit DMG  ·  Break Eff
+    Relic 6 [Head  ]: SPD  ·  ATK%  ·  ATK flat  ·  HP flat
+    Relic 7 [Head  ]: Crit DMG  ·  HP%  ·  ATK%  ·  DEF%
+
+  SUBSTAT FREQUENCY THIS RUN:
+    ATK%         : 6/7 relics (86%)
+    HP%          : 3/7 relics (43%)
+    Crit DMG     : 3/7 relics (43%)
+    Effect RES   : 3/7 relics (43%)
+    HP flat      : 2/7 relics (29%)
+    SPD          : 2/7 relics (29%)
+    Crit Rate    : 2/7 relics (29%)
+    Effect Hit   : 2/7 relics (29%)
+    Break Eff    : 2/7 relics (29%)
+    ATK flat     : 1/7 relics (14%)
+    DEF flat     : 1/7 relics (14%)
+    DEF%         : 1/7 relics (14%)
+
+  RUN #008  2026-03-16T22:47:09.555Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Yao Guang  S2:Dr. Ratio  S3:Evernight  S4:Hysilens
+  ID ARRAY   : [1502-1305-1413-1410]
+  PATHS      : paths: Elat · Hunt · Remem · Nihil   elems: Physical · Imaginary · Ice
+  TIME       : 45s
+  OUTCOME    : one crit
+  AVG TOP 4  : HP flat + Crit DMG + ATK flat + DEF flat
+
+  RELICS (7 pieces):
+    Relic 1 [Hands ]: Break Eff  ·  Crit Rate  ·  DEF flat  ·  HP flat
+    Relic 2 [Hands ]: HP%  ·  HP flat  ·  Crit DMG  ·  Effect Hit
+    Relic 3 [Head  ]: Crit DMG  ·  ATK flat  ·  HP%  ·  DEF flat
+    Relic 4 [Hands ]: DEF%  ·  SPD  ·  Crit DMG  ·  Effect Hit
+    Relic 5 [Chest ]: Crit Rate  ·  Effect RES  ·  ATK flat  ·  Break Eff
+    Relic 6 [Boots ]: DEF flat  ·  DEF%  ·  ATK flat  ·  HP flat
+    Relic 7 [Boots ]: HP flat  ·  Break Eff  ·  Crit DMG  ·  Effect RES
+
+  SUBSTAT FREQUENCY THIS RUN:
+    HP flat      : 4/7 relics (57%)
+    Crit DMG     : 4/7 relics (57%)
+    ATK flat     : 3/7 relics (43%)
+    DEF flat     : 3/7 relics (43%)
+    Break Eff    : 3/7 relics (43%)
+    HP%          : 2/7 relics (29%)
+    DEF%         : 2/7 relics (29%)
+    Crit Rate    : 2/7 relics (29%)
+    Effect Hit   : 2/7 relics (29%)
+    Effect RES   : 2/7 relics (29%)
+    SPD          : 1/7 relics (14%)
+
+  RUN #009  2026-03-16T22:50:05.238Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Evernight  S2:Hysilens  S3:Dr. Ratio  S4:Yao Guang
+  ID ARRAY   : [1413-1410-1305-1502]
+  PATHS      : paths: Remem · Nihil · Hunt · Elat   elems: Ice · Physical · Imaginary
+  TIME       : 58s
+  OUTCOME    : spd one crit
+  AVG TOP 4  : DEF% + HP% + SPD + Crit Rate
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: DEF%  ·  SPD  ·  Break Eff  ·  ATK%
+    Relic 2 [Chest ]: Break Eff  ·  HP%  ·  ATK flat  ·  DEF flat
+    Relic 3 [Head  ]: DEF%  ·  SPD  ·  Crit DMG  ·  DEF flat
+    Relic 4 [Head  ]: DEF%  ·  Crit Rate  ·  Effect Hit  ·  ATK%
+    Relic 5 [Hands ]: HP flat  ·  HP%  ·  SPD  ·  Break Eff
+    Relic 6 [Hands ]: Crit Rate  ·  Crit DMG  ·  HP flat  ·  DEF%
+    Relic 7 [Hands ]: Crit Rate  ·  HP%  ·  DEF%  ·  Effect RES
+
+  SUBSTAT FREQUENCY THIS RUN:
+    DEF%         : 5/7 relics (71%)
+    HP%          : 3/7 relics (43%)
+    SPD          : 3/7 relics (43%)
+    Crit Rate    : 3/7 relics (43%)
+    Break Eff    : 3/7 relics (43%)
+    HP flat      : 2/7 relics (29%)
+    DEF flat     : 2/7 relics (29%)
+    ATK%         : 2/7 relics (29%)
+    Crit DMG     : 2/7 relics (29%)
+    ATK flat     : 1/7 relics (14%)
+    Effect Hit   : 1/7 relics (14%)
+    Effect RES   : 1/7 relics (14%)
+
+  RUN #010  2026-03-16T22:52:40.395Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Evernight  S2:Hysilens  S3:Dr. Ratio  S4:Yao Guang
+  ID ARRAY   : [1413-1410-1305-1502]
+  PATHS      : paths: Remem · Nihil · Hunt · Elat   elems: Ice · Physical · Imaginary
+  TIME       : 55s
+  OUTCOME    : effect junk
+  AVG TOP 4  : ATK flat + HP% + Effect Hit + Effect RES
+
+  RELICS (7 pieces):
+    Relic 1 [Hands ]: HP%  ·  HP flat  ·  DEF%  ·  Effect RES
+    Relic 2 [Head  ]: SPD  ·  Crit DMG  ·  DEF flat  ·  Effect Hit
+    Relic 3 [Head  ]: Crit Rate  ·  Effect Hit  ·  ATK flat  ·  HP%
+    Relic 4 [Boots ]: Break Eff  ·  Effect Hit  ·  HP%  ·  ATK flat
+    Relic 5 [Boots ]: ATK flat  ·  HP%  ·  HP flat  ·  Effect RES
+    Relic 6 [Hands ]: Break Eff  ·  Effect RES  ·  Effect Hit  ·  DEF%
+    Relic 7 [Boots ]: DEF flat  ·  ATK flat  ·  Crit Rate  ·  Effect RES
+
+  SUBSTAT FREQUENCY THIS RUN:
+    ATK flat     : 4/7 relics (57%)
+    HP%          : 4/7 relics (57%)
+    Effect Hit   : 4/7 relics (57%)
+    Effect RES   : 4/7 relics (57%)
+    HP flat      : 2/7 relics (29%)
+    DEF flat     : 2/7 relics (29%)
+    DEF%         : 2/7 relics (29%)
+    Crit Rate    : 2/7 relics (29%)
+    Break Eff    : 2/7 relics (29%)
+    SPD          : 1/7 relics (14%)
+    Crit DMG     : 1/7 relics (14%)
+
+====================================================================
+  HOW TO READ THIS DATA:
+
+  S3 — same ID array → same substat cluster across runs?
+       YES = ordered slot array is dominant seed variable
+
+  S4 — which character IDs score highest CR/CD/SPD % per relic?
+       High % = that ID may anchor the crit zone in the seed
+
+  S5 — does Remem path comp score differently than Harm?
+       Different % = path combination contributes to seed
+
+  S6 — does cavern change substat profile?
+       Different % per cavern = stage ID is part of seed
+====================================================================
+  END OF LOG — upload this file for analysis
+====================================================================

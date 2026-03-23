@@ -1,0 +1,299 @@
+====================================================================
+  HSR RELIC SEED SIMULATOR — DEBUG LOG v3.0
+  Svarog Tracer Research Tool
+====================================================================
+  Exported : 3/16/2026, 11:03:49 PM
+  Total runs: 6
+====================================================================
+
+[ SECTION 1 — OUTCOME DISTRIBUTION ]
+--------------------------------------------------------------------
+  flat junk                   : 4 (67%)
+  effect junk                 : 2 (33%)
+
+[ SECTION 2 — GLOBAL SUBSTAT FREQUENCY (all relics, all runs) ]
+--------------------------------------------------------------------
+  Total relics logged: 43 across 6 runs
+
+  HP%          : ███████████████████░  (19/43 = 44%)
+  DEF%         : ██████████████████░░  (18/43 = 42%)
+  Break Eff    : █████████████████░░░  (17/43 = 40%)
+  DEF flat     : ████████████████░░░░  (16/43 = 37%)
+  ATK%         : ████████████████░░░░  (16/43 = 37%)
+  Effect Hit   : ████████████████░░░░  (16/43 = 37%)
+  HP flat      : ███████████████░░░░░  (15/43 = 35%)
+  Effect RES   : ███████████████░░░░░  (15/43 = 35%)
+  ATK flat     : ██████████████░░░░░░  (14/43 = 33%)
+  Crit DMG     : ██████████░░░░░░░░░░  (10/43 = 23%)
+  Crit Rate    : █████████░░░░░░░░░░░  (9/43 = 21%)
+  SPD          : ███████░░░░░░░░░░░░░  (7/43 = 16%)
+
+[ SECTION 3 — SLOT ORDER ANALYSIS ]
+--------------------------------------------------------------------
+  Same 4 chars, different slot order = different ID array = different seed
+
+  Array: [1402-1403-1313-1217]  (3 run(s))
+  Order: S1:Aglaea | S2:Tribbie | S3:Sunday | S4:Huohuo
+  Substat rates: DEF flat 59%  ATK% 45%  HP% 41%  DEF% 41%  Effect RES 41%  Break Eff 36%
+  Outcomes: flat-junk, effect-junk, flat-junk
+
+  Array: [1217-1313-1403-1402]  (1 run(s))
+  Order: S1:Huohuo | S2:Sunday | S3:Tribbie | S4:Aglaea
+  Substat rates: HP flat 71%  HP% 57%  ATK flat 43%  DEF% 43%  Effect Hit 43%  DEF flat 29%
+  Outcomes: flat-junk
+
+  Array: [1005-1307-1414-1410]  (1 run(s))
+  Order: S1:Kafka | S2:Black Swan | S3:Dan Heng • PT | S4:Hysilens
+  Substat rates: Break Eff 71%  HP% 57%  DEF% 57%  HP flat 43%  Effect RES 43%  ATK flat 29%
+  Outcomes: flat-junk
+
+  Array: [1005-1410-1106-1414]  (1 run(s))
+  Order: S1:Kafka | S2:Hysilens | S3:Pela | S4:Dan Heng • PT
+  Substat rates: Effect Hit 71%  HP flat 43%  ATK flat 43%  ATK% 43%  Effect RES 43%  HP% 29%
+  Outcomes: effect-junk
+
+[ SECTION 4 — CHARACTER CRIT CORRELATION ]
+--------------------------------------------------------------------
+  Which character IDs in the team correlate with crit/SPD drops?
+
+  Huohuo           ID:1217   CR:17%   CD:24%   SPD:21%    (4 runs / 29 relics)
+  Sunday           ID:1313   CR:17%   CD:24%   SPD:21%    (4 runs / 29 relics)
+  Aglaea           ID:1402   CR:17%   CD:24%   SPD:21%    (4 runs / 29 relics)
+  Tribbie          ID:1403   CR:17%   CD:24%   SPD:21%    (4 runs / 29 relics)
+  Kafka            ID:1005   CR:29%   CD:21%   SPD:7%     (2 runs / 14 relics)
+  Hysilens         ID:1410   CR:29%   CD:21%   SPD:7%     (2 runs / 14 relics)
+  Dan Heng • PT    ID:1414   CR:29%   CD:21%   SPD:7%     (2 runs / 14 relics)
+  Pela             ID:1106   CR:29%   CD:29%   SPD:0%     (1 runs / 7 relics)
+  Black Swan       ID:1307   CR:29%   CD:14%   SPD:14%    (1 runs / 7 relics)
+
+[ SECTION 5 — PATH COMPOSITION ANALYSIS ]
+--------------------------------------------------------------------
+  paths: Remem · Harmx2 · Abund   elems: Lightning · Quantum · Imaginary · Wind — 3 run(s)
+  Top: DEF flat 59%  ATK% 45%  HP% 41%  DEF% 41%  Effect RES 41%
+
+  paths: Abund · Harmx2 · Remem   elems: Wind · Imaginary · Quantum · Lightning — 1 run(s)
+  Top: HP flat 71%  HP% 57%  ATK flat 43%  DEF% 43%  Effect Hit 43%
+
+  paths: Nihilx3 · Pres   elems: Lightning · Wind · Physical — 1 run(s)
+  Top: Break Eff 71%  HP% 57%  DEF% 57%  HP flat 43%  Effect RES 43%
+
+  paths: Nihilx3 · Pres   elems: Lightning · Physical · Ice — 1 run(s)
+  Top: Effect Hit 71%  HP flat 43%  ATK flat 43%  ATK% 43%  Effect RES 43%
+
+[ SECTION 6 — CAVERN ANALYSIS ]
+--------------------------------------------------------------------
+  not selected — 6 run(s)
+  Top: HP% 44%  DEF% 42%  Break Eff 40%  DEF flat 37%  ATK% 37%
+
+[ SECTION 7 — ALL RUNS FULL DETAIL ]
+--------------------------------------------------------------------
+
+  RUN #001  2026-03-16T20:50:05.861Z
+  ··································································
+  CAVERN     : not selected
+  SLOT ORDER : S1:Aglaea  S2:Tribbie  S3:Sunday  S4:Huohuo
+  ID ARRAY   : [1402-1403-1313-1217]
+  PATHS      : paths: Remem · Harmx2 · Abund   elems: Lightning · Quantum · Imaginary · Wind
+  TIME       : 41s
+  OUTCOME    : flat junk
+  AVG TOP 4  : HP% + ATK% + ATK flat + DEF flat
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: ATK flat  ·  HP%  ·  DEF%  ·  ATK%
+    Relic 2 [Head  ]: Effect RES  ·  SPD  ·  ATK%  ·  ATK flat
+    Relic 3 [Head  ]: Effect Hit  ·  HP%  ·  ATK%  ·  DEF%
+    Relic 4 [Hands ]: DEF flat  ·  Crit Rate  ·  Effect RES  ·  HP flat
+    Relic 5 [Chest ]: DEF flat  ·  DEF%  ·  HP flat  ·  Effect RES
+    Relic 6 [Hands ]: HP%  ·  Break Eff  ·  DEF flat  ·  SPD
+    Relic 7 [Boots ]: ATK flat  ·  ATK%  ·  Break Eff  ·  HP%
+
+  SUBSTAT FREQUENCY THIS RUN:
+    HP%          : 4/7 relics (57%)
+    ATK%         : 4/7 relics (57%)
+    ATK flat     : 3/7 relics (43%)
+    DEF flat     : 3/7 relics (43%)
+    DEF%         : 3/7 relics (43%)
+    Effect RES   : 3/7 relics (43%)
+    HP flat      : 2/7 relics (29%)
+    SPD          : 2/7 relics (29%)
+    Break Eff    : 2/7 relics (29%)
+    Crit Rate    : 1/7 relics (14%)
+    Effect Hit   : 1/7 relics (14%)
+
+  RUN #002  2026-03-16T20:52:53.122Z
+  ··································································
+  CAVERN     : not selected
+  SLOT ORDER : S1:Aglaea  S2:Tribbie  S3:Sunday  S4:Huohuo
+  ID ARRAY   : [1402-1403-1313-1217]
+  PATHS      : paths: Remem · Harmx2 · Abund   elems: Lightning · Quantum · Imaginary · Wind
+  TIME       : 56s
+  OUTCOME    : effect junk
+  AVG TOP 4  : Effect Hit + DEF flat + Effect RES + ATK%
+
+  RELICS (8 pieces):
+    Relic 1 [Hands ]: Crit Rate  ·  ATK%  ·  Effect RES  ·  Effect Hit
+    Relic 2 [Head  ]: DEF flat  ·  ATK%  ·  Crit DMG  ·  Effect Hit
+    Relic 3 [Hands ]: Effect RES  ·  HP%  ·  DEF flat  ·  HP flat
+    Relic 4 [Head  ]: DEF flat  ·  SPD  ·  DEF%  ·  ATK flat
+    Relic 5 [Chest ]: ATK%  ·  Effect RES  ·  Break Eff  ·  DEF%
+    Relic 6 [Chest ]: Crit Rate  ·  Effect Hit  ·  Effect RES  ·  Break Eff
+    Relic 7 [Head  ]: Crit Rate  ·  Crit DMG  ·  HP%  ·  Effect Hit
+    Relic 8 [Boots ]: DEF%  ·  Effect Hit  ·  DEF flat  ·  HP flat
+
+  SUBSTAT FREQUENCY THIS RUN:
+    Effect Hit   : 5/8 relics (63%)
+    DEF flat     : 4/8 relics (50%)
+    Effect RES   : 4/8 relics (50%)
+    ATK%         : 3/8 relics (38%)
+    DEF%         : 3/8 relics (38%)
+    Crit Rate    : 3/8 relics (38%)
+    HP flat      : 2/8 relics (25%)
+    HP%          : 2/8 relics (25%)
+    Crit DMG     : 2/8 relics (25%)
+    Break Eff    : 2/8 relics (25%)
+    ATK flat     : 1/8 relics (13%)
+    SPD          : 1/8 relics (13%)
+
+  RUN #003  2026-03-16T20:55:11.488Z
+  ··································································
+  CAVERN     : not selected
+  SLOT ORDER : S1:Aglaea  S2:Tribbie  S3:Sunday  S4:Huohuo
+  ID ARRAY   : [1402-1403-1313-1217]
+  PATHS      : paths: Remem · Harmx2 · Abund   elems: Lightning · Quantum · Imaginary · Wind
+  TIME       : 59s
+  OUTCOME    : flat junk
+  AVG TOP 4  : DEF flat + Break Eff + HP% + ATK%
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: DEF%  ·  DEF flat  ·  SPD  ·  HP%
+    Relic 2 [Head  ]: DEF flat  ·  ATK%  ·  Crit DMG  ·  Effect RES
+    Relic 3 [Head  ]: HP%  ·  Break Eff  ·  ATK flat  ·  DEF flat
+    Relic 4 [Head  ]: DEF flat  ·  Crit DMG  ·  Break Eff  ·  ATK%
+    Relic 5 [Hands ]: HP%  ·  DEF%  ·  DEF flat  ·  Break Eff
+    Relic 6 [Hands ]: SPD  ·  Crit DMG  ·  DEF%  ·  ATK%
+    Relic 7 [Chest ]: ATK flat  ·  DEF flat  ·  Effect RES  ·  Break Eff
+
+  SUBSTAT FREQUENCY THIS RUN:
+    DEF flat     : 6/7 relics (86%)
+    Break Eff    : 4/7 relics (57%)
+    HP%          : 3/7 relics (43%)
+    ATK%         : 3/7 relics (43%)
+    DEF%         : 3/7 relics (43%)
+    Crit DMG     : 3/7 relics (43%)
+    ATK flat     : 2/7 relics (29%)
+    SPD          : 2/7 relics (29%)
+    Effect RES   : 2/7 relics (29%)
+
+  RUN #004  2026-03-16T20:58:46.186Z
+  ··································································
+  CAVERN     : not selected
+  SLOT ORDER : S1:Huohuo  S2:Sunday  S3:Tribbie  S4:Aglaea
+  ID ARRAY   : [1217-1313-1403-1402]
+  PATHS      : paths: Abund · Harmx2 · Remem   elems: Wind · Imaginary · Quantum · Lightning
+  TIME       : 59s
+  OUTCOME    : flat junk
+  AVG TOP 4  : HP flat + HP% + ATK flat + DEF%
+
+  RELICS (7 pieces):
+    Relic 1 [Chest ]: HP flat  ·  ATK flat  ·  Effect Hit  ·  DEF%
+    Relic 2 [Chest ]: ATK flat  ·  HP flat  ·  HP%  ·  ATK%
+    Relic 3 [Head  ]: DEF flat  ·  ATK%  ·  HP%  ·  Crit Rate
+    Relic 4 [Chest ]: DEF%  ·  SPD  ·  ATK flat  ·  HP flat
+    Relic 5 [Boots ]: HP%  ·  Break Eff  ·  Effect Hit  ·  HP flat
+    Relic 6 [Chest ]: HP flat  ·  Effect Hit  ·  Crit DMG  ·  DEF flat
+    Relic 7 [Chest ]: Break Eff  ·  Crit DMG  ·  DEF%  ·  HP%
+
+  SUBSTAT FREQUENCY THIS RUN:
+    HP flat      : 5/7 relics (71%)
+    HP%          : 4/7 relics (57%)
+    ATK flat     : 3/7 relics (43%)
+    DEF%         : 3/7 relics (43%)
+    Effect Hit   : 3/7 relics (43%)
+    DEF flat     : 2/7 relics (29%)
+    ATK%         : 2/7 relics (29%)
+    Crit DMG     : 2/7 relics (29%)
+    Break Eff    : 2/7 relics (29%)
+    SPD          : 1/7 relics (14%)
+    Crit Rate    : 1/7 relics (14%)
+
+  RUN #005  2026-03-16T21:00:33.025Z
+  ··································································
+  CAVERN     : not selected
+  SLOT ORDER : S1:Kafka  S2:Black Swan  S3:Dan Heng • PT  S4:Hysilens
+  ID ARRAY   : [1005-1307-1414-1410]
+  PATHS      : paths: Nihilx3 · Pres   elems: Lightning · Wind · Physical
+  TIME       : 29s
+  OUTCOME    : flat junk
+  AVG TOP 4  : Break Eff + HP% + DEF% + HP flat
+
+  RELICS (7 pieces):
+    Relic 1 [Hands ]: ATK%  ·  Crit Rate  ·  Effect RES  ·  Break Eff
+    Relic 2 [Chest ]: Crit DMG  ·  Crit Rate  ·  ATK flat  ·  DEF%
+    Relic 3 [Boots ]: HP flat  ·  HP%  ·  Effect RES  ·  Break Eff
+    Relic 4 [Hands ]: DEF%  ·  HP flat  ·  Effect Hit  ·  Break Eff
+    Relic 5 [Hands ]: DEF%  ·  HP%  ·  Effect RES  ·  Break Eff
+    Relic 6 [Boots ]: HP flat  ·  HP%  ·  DEF%  ·  Break Eff
+    Relic 7 [Boots ]: ATK flat  ·  HP%  ·  Effect Hit  ·  SPD
+
+  SUBSTAT FREQUENCY THIS RUN:
+    Break Eff    : 5/7 relics (71%)
+    HP%          : 4/7 relics (57%)
+    DEF%         : 4/7 relics (57%)
+    HP flat      : 3/7 relics (43%)
+    Effect RES   : 3/7 relics (43%)
+    ATK flat     : 2/7 relics (29%)
+    Crit Rate    : 2/7 relics (29%)
+    Effect Hit   : 2/7 relics (29%)
+    ATK%         : 1/7 relics (14%)
+    SPD          : 1/7 relics (14%)
+    Crit DMG     : 1/7 relics (14%)
+
+  RUN #006  2026-03-16T21:03:39.465Z
+  ··································································
+  CAVERN     : not selected
+  SLOT ORDER : S1:Kafka  S2:Hysilens  S3:Pela  S4:Dan Heng • PT
+  ID ARRAY   : [1005-1410-1106-1414]
+  PATHS      : paths: Nihilx3 · Pres   elems: Lightning · Physical · Ice
+  TIME       : 41s
+  OUTCOME    : effect junk
+  AVG TOP 4  : Effect Hit + HP flat + ATK flat + ATK%
+
+  RELICS (7 pieces):
+    Relic 1 [Boots ]: HP flat  ·  ATK%  ·  DEF%  ·  Crit DMG
+    Relic 2 [Boots ]: Break Eff  ·  Effect Hit  ·  Effect RES  ·  HP%
+    Relic 3 [Head  ]: HP%  ·  Effect RES  ·  Effect Hit  ·  ATK flat
+    Relic 4 [Chest ]: ATK flat  ·  ATK%  ·  Crit Rate  ·  Effect RES
+    Relic 5 [Boots ]: ATK%  ·  Effect Hit  ·  DEF flat  ·  Break Eff
+    Relic 6 [Hands ]: HP flat  ·  Crit Rate  ·  Effect Hit  ·  DEF%
+    Relic 7 [Boots ]: ATK flat  ·  HP flat  ·  Crit DMG  ·  Effect Hit
+
+  SUBSTAT FREQUENCY THIS RUN:
+    Effect Hit   : 5/7 relics (71%)
+    HP flat      : 3/7 relics (43%)
+    ATK flat     : 3/7 relics (43%)
+    ATK%         : 3/7 relics (43%)
+    Effect RES   : 3/7 relics (43%)
+    HP%          : 2/7 relics (29%)
+    DEF%         : 2/7 relics (29%)
+    Crit Rate    : 2/7 relics (29%)
+    Crit DMG     : 2/7 relics (29%)
+    Break Eff    : 2/7 relics (29%)
+    DEF flat     : 1/7 relics (14%)
+
+====================================================================
+  HOW TO READ THIS DATA:
+
+  S3 — same ID array → same substat cluster across runs?
+       YES = ordered slot array is dominant seed variable
+
+  S4 — which character IDs score highest CR/CD/SPD % per relic?
+       High % = that ID may anchor the crit zone in the seed
+
+  S5 — does Remem path comp score differently than Harm?
+       Different % = path combination contributes to seed
+
+  S6 — does cavern change substat profile?
+       Different % per cavern = stage ID is part of seed
+====================================================================
+  END OF LOG — upload this file for analysis
+====================================================================

@@ -1,0 +1,279 @@
+====================================================================
+  HSR RELIC SEED SIMULATOR — DEBUG LOG v3.0
+  Svarog Tracer Research Tool
+====================================================================
+  Exported : 16.03.2026, 14:50:47
+  Total runs: 6
+====================================================================
+
+[ SECTION 1 — OUTCOME DISTRIBUTION ]
+--------------------------------------------------------------------
+  effect junk                 : 3 (50%)
+  one crit                    : 2 (33%)
+  flat junk                   : 1 (17%)
+
+[ SECTION 2 — GLOBAL SUBSTAT FREQUENCY (all relics, all runs) ]
+--------------------------------------------------------------------
+  Total relics logged: 45 across 6 runs
+
+  DEF flat     : ████████████████████  (20/45 = 44%)
+  Effect Hit   : ███████████████████░  (19/45 = 42%)
+  Effect RES   : ███████████████████░  (19/45 = 42%)
+  HP%          : ██████████████████░░  (18/45 = 40%)
+  ATK%         : ██████████████████░░  (18/45 = 40%)
+  Crit DMG     : █████████████████░░░  (17/45 = 38%)
+  HP flat      : ████████████████░░░░  (16/45 = 36%)
+  DEF%         : ███████████████░░░░░  (15/45 = 33%)
+  Crit Rate    : █████████████░░░░░░░  (13/45 = 29%)
+  Break Eff    : █████████████░░░░░░░  (13/45 = 29%)
+  ATK flat     : ███████░░░░░░░░░░░░░  (7/45 = 16%)
+  SPD          : █████░░░░░░░░░░░░░░░  (5/45 = 11%)
+
+[ SECTION 3 — SLOT ORDER ANALYSIS ]
+--------------------------------------------------------------------
+  Same 4 chars, different slot order = different ID array = different seed
+
+  Array: [1501-1306-1502-1211]  (6 run(s))
+  Order: S1:Sparxie | S2:Sparkle | S3:Yao Guang | S4:Bailu
+  Substat rates: DEF flat 44%  Effect Hit 42%  Effect RES 42%  HP% 40%  ATK% 40%  Crit DMG 38%
+  Outcomes: one-crit, effect-junk, effect-junk, effect-junk, one-crit, flat-junk
+
+[ SECTION 4 — CHARACTER CRIT CORRELATION ]
+--------------------------------------------------------------------
+  Which character IDs in the team correlate with crit/SPD drops?
+
+  Bailu            ID:1211   CR:29%   CD:38%   SPD:11%    (6 runs / 45 relics)
+  Sparkle          ID:1306   CR:29%   CD:38%   SPD:11%    (6 runs / 45 relics)
+  Sparxie          ID:1501   CR:29%   CD:38%   SPD:11%    (6 runs / 45 relics)
+  Yao Guang        ID:1502   CR:29%   CD:38%   SPD:11%    (6 runs / 45 relics)
+
+[ SECTION 5 — PATH COMPOSITION ANALYSIS ]
+--------------------------------------------------------------------
+  paths: Elatx2 · Harm · Abund   elems: Fire · Quantum · Physical · Lightning — 6 run(s)
+  Top: DEF flat 44%  Effect Hit 42%  Effect RES 42%  HP% 40%  ATK% 40%
+
+[ SECTION 6 — CAVERN ANALYSIS ]
+--------------------------------------------------------------------
+  Path of Possession — 6 run(s)
+  Top: DEF flat 44%  Effect Hit 42%  Effect RES 42%  HP% 40%  ATK% 40%
+
+[ SECTION 7 — ALL RUNS FULL DETAIL ]
+--------------------------------------------------------------------
+
+  RUN #001  2026-03-16T11:33:31.882Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Sparxie  S2:Sparkle  S3:Yao Guang  S4:Bailu
+  ID ARRAY   : [1501-1306-1502-1211]
+  PATHS      : paths: Elatx2 · Harm · Abund   elems: Fire · Quantum · Physical · Lightning
+  TIME       : 24s
+  OUTCOME    : one crit
+  AVG TOP 4  : HP% + DEF% + Crit DMG + Effect Hit
+
+  RELICS (8 pieces):
+    Relic 1 [Hands ]: DEF flat  ·  ATK%  ·  Effect RES  ·  Crit Rate
+    Relic 2 [Chest ]: ATK flat  ·  DEF flat  ·  Crit DMG  ·  HP%
+    Relic 3 [Head  ]: ATK%  ·  DEF%  ·  Crit Rate  ·  Effect Hit
+    Relic 4 [Boots ]: HP flat  ·  Crit Rate  ·  Crit DMG  ·  Effect Hit
+    Relic 5 [Boots ]: DEF%  ·  Crit DMG  ·  HP%  ·  Effect RES
+    Relic 6 [Hands ]: DEF%  ·  Effect RES  ·  Crit DMG  ·  HP%
+    Relic 7 [Hands ]: ATK%  ·  Effect Hit  ·  DEF flat  ·  Break Eff
+    Relic 8 [Chest ]: DEF%  ·  Effect Hit  ·  HP%  ·  SPD
+
+  SUBSTAT FREQUENCY THIS RUN:
+    HP%          : 4/8 relics (50%)
+    DEF%         : 4/8 relics (50%)
+    Crit DMG     : 4/8 relics (50%)
+    Effect Hit   : 4/8 relics (50%)
+    DEF flat     : 3/8 relics (38%)
+    ATK%         : 3/8 relics (38%)
+    Crit Rate    : 3/8 relics (38%)
+    Effect RES   : 3/8 relics (38%)
+    HP flat      : 1/8 relics (13%)
+    ATK flat     : 1/8 relics (13%)
+    SPD          : 1/8 relics (13%)
+    Break Eff    : 1/8 relics (13%)
+
+  RUN #002  2026-03-16T11:39:52.060Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Sparxie  S2:Sparkle  S3:Yao Guang  S4:Bailu
+  ID ARRAY   : [1501-1306-1502-1211]
+  PATHS      : paths: Elatx2 · Harm · Abund   elems: Fire · Quantum · Physical · Lightning
+  TIME       : 18s
+  OUTCOME    : effect junk
+  AVG TOP 4  : DEF flat + HP% + Effect Hit + Effect RES
+
+  RELICS (7 pieces):
+    Relic 1 [Chest ]: HP%  ·  SPD  ·  Crit DMG  ·  Effect Hit
+    Relic 2 [Boots ]: DEF flat  ·  Effect Hit  ·  Effect RES  ·  Break Eff
+    Relic 3 [Head  ]: ATK flat  ·  Crit DMG  ·  Effect RES  ·  ATK%
+    Relic 4 [Head  ]: ATK%  ·  DEF%  ·  Effect RES  ·  HP%
+    Relic 5 [Chest ]: Crit Rate  ·  DEF flat  ·  Effect Hit  ·  HP flat
+    Relic 6 [Boots ]: DEF flat  ·  HP%  ·  HP flat  ·  ATK flat
+    Relic 7 [Chest ]: HP%  ·  Effect Hit  ·  DEF flat  ·  DEF%
+
+  SUBSTAT FREQUENCY THIS RUN:
+    DEF flat     : 4/7 relics (57%)
+    HP%          : 4/7 relics (57%)
+    Effect Hit   : 4/7 relics (57%)
+    Effect RES   : 3/7 relics (43%)
+    HP flat      : 2/7 relics (29%)
+    ATK flat     : 2/7 relics (29%)
+    ATK%         : 2/7 relics (29%)
+    DEF%         : 2/7 relics (29%)
+    Crit DMG     : 2/7 relics (29%)
+    SPD          : 1/7 relics (14%)
+    Crit Rate    : 1/7 relics (14%)
+    Break Eff    : 1/7 relics (14%)
+
+  RUN #003  2026-03-16T11:42:52.188Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Sparxie  S2:Sparkle  S3:Yao Guang  S4:Bailu
+  ID ARRAY   : [1501-1306-1502-1211]
+  PATHS      : paths: Elatx2 · Harm · Abund   elems: Fire · Quantum · Physical · Lightning
+  TIME       : 31s
+  OUTCOME    : effect junk
+  AVG TOP 4  : DEF flat + Effect Hit + Effect RES + HP%
+
+  RELICS (8 pieces):
+    Relic 1 [Hands ]: ATK%  ·  Effect RES  ·  Effect Hit  ·  Break Eff
+    Relic 2 [Chest ]: ATK flat  ·  HP%  ·  Effect RES  ·  DEF%
+    Relic 3 [Boots ]: ATK%  ·  Crit Rate  ·  Effect Hit  ·  DEF flat
+    Relic 4 [Head  ]: ATK%  ·  Crit Rate  ·  DEF flat  ·  Effect Hit
+    Relic 5 [Boots ]: Crit DMG  ·  Break Eff  ·  DEF flat  ·  HP flat
+    Relic 6 [Head  ]: SPD  ·  Crit DMG  ·  Break Eff  ·  HP%
+    Relic 7 [Hands ]: HP%  ·  Effect RES  ·  HP flat  ·  DEF flat
+    Relic 8 [Hands ]: Effect Hit  ·  Effect RES  ·  Crit DMG  ·  DEF flat
+
+  SUBSTAT FREQUENCY THIS RUN:
+    DEF flat     : 5/8 relics (63%)
+    Effect Hit   : 4/8 relics (50%)
+    Effect RES   : 4/8 relics (50%)
+    HP%          : 3/8 relics (38%)
+    ATK%         : 3/8 relics (38%)
+    Crit DMG     : 3/8 relics (38%)
+    Break Eff    : 3/8 relics (38%)
+    HP flat      : 2/8 relics (25%)
+    Crit Rate    : 2/8 relics (25%)
+    ATK flat     : 1/8 relics (13%)
+    DEF%         : 1/8 relics (13%)
+    SPD          : 1/8 relics (13%)
+
+  RUN #004  2026-03-16T11:46:03.970Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Sparxie  S2:Sparkle  S3:Yao Guang  S4:Bailu
+  ID ARRAY   : [1501-1306-1502-1211]
+  PATHS      : paths: Elatx2 · Harm · Abund   elems: Fire · Quantum · Physical · Lightning
+  TIME       : 26s
+  OUTCOME    : effect junk
+  AVG TOP 4  : HP flat + Effect Hit + Effect RES + DEF flat
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: ATK flat  ·  Crit DMG  ·  Effect Hit  ·  Crit Rate
+    Relic 2 [Hands ]: HP flat  ·  DEF flat  ·  Effect Hit  ·  Effect RES
+    Relic 3 [Hands ]: DEF flat  ·  Effect RES  ·  DEF%  ·  HP flat
+    Relic 4 [Hands ]: DEF flat  ·  Crit Rate  ·  Crit DMG  ·  Effect Hit
+    Relic 5 [Hands ]: HP flat  ·  Effect Hit  ·  Effect RES  ·  Break Eff
+    Relic 6 [Boots ]: HP flat  ·  HP%  ·  ATK%  ·  Break Eff
+    Relic 7 [Boots ]: SPD  ·  HP%  ·  DEF%  ·  Effect RES
+
+  SUBSTAT FREQUENCY THIS RUN:
+    HP flat      : 4/7 relics (57%)
+    Effect Hit   : 4/7 relics (57%)
+    Effect RES   : 4/7 relics (57%)
+    DEF flat     : 3/7 relics (43%)
+    HP%          : 2/7 relics (29%)
+    DEF%         : 2/7 relics (29%)
+    Crit Rate    : 2/7 relics (29%)
+    Crit DMG     : 2/7 relics (29%)
+    Break Eff    : 2/7 relics (29%)
+    ATK flat     : 1/7 relics (14%)
+    ATK%         : 1/7 relics (14%)
+    SPD          : 1/7 relics (14%)
+
+  RUN #005  2026-03-16T11:48:08.324Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Sparxie  S2:Sparkle  S3:Yao Guang  S4:Bailu
+  ID ARRAY   : [1501-1306-1502-1211]
+  PATHS      : paths: Elatx2 · Harm · Abund   elems: Fire · Quantum · Physical · Lightning
+  TIME       : 18s
+  OUTCOME    : one crit
+  AVG TOP 4  : DEF flat + ATK% + Crit DMG + DEF%
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: DEF flat  ·  HP%  ·  ATK%  ·  Effect RES
+    Relic 2 [Head  ]: HP%  ·  ATK%  ·  SPD  ·  Crit DMG
+    Relic 3 [Chest ]: HP flat  ·  DEF%  ·  Crit DMG  ·  Crit Rate
+    Relic 4 [Boots ]: Break Eff  ·  DEF%  ·  ATK%  ·  Crit DMG
+    Relic 5 [Head  ]: DEF flat  ·  DEF%  ·  ATK flat  ·  Crit DMG
+    Relic 6 [Hands ]: DEF flat  ·  ATK%  ·  Crit Rate  ·  Effect RES
+    Relic 7 [Boots ]: HP flat  ·  DEF flat  ·  Effect Hit  ·  Effect RES
+
+  SUBSTAT FREQUENCY THIS RUN:
+    DEF flat     : 4/7 relics (57%)
+    ATK%         : 4/7 relics (57%)
+    Crit DMG     : 4/7 relics (57%)
+    DEF%         : 3/7 relics (43%)
+    Effect RES   : 3/7 relics (43%)
+    HP flat      : 2/7 relics (29%)
+    HP%          : 2/7 relics (29%)
+    Crit Rate    : 2/7 relics (29%)
+    ATK flat     : 1/7 relics (14%)
+    SPD          : 1/7 relics (14%)
+    Effect Hit   : 1/7 relics (14%)
+    Break Eff    : 1/7 relics (14%)
+
+  RUN #006  2026-03-16T11:50:46.072Z
+  ··································································
+  CAVERN     : Path of Possession
+  SLOT ORDER : S1:Sparxie  S2:Sparkle  S3:Yao Guang  S4:Bailu
+  ID ARRAY   : [1501-1306-1502-1211]
+  PATHS      : paths: Elatx2 · Harm · Abund   elems: Fire · Quantum · Physical · Lightning
+  TIME       : 23s
+  OUTCOME    : flat junk
+  AVG TOP 4  : HP flat + ATK% + Break Eff + HP%
+
+  RELICS (8 pieces):
+    Relic 1 [Chest ]: HP flat  ·  HP%  ·  ATK flat  ·  ATK%
+    Relic 2 [Boots ]: HP flat  ·  Crit Rate  ·  Effect Hit  ·  Break Eff
+    Relic 3 [Hands ]: HP%  ·  DEF flat  ·  DEF%  ·  Break Eff
+    Relic 4 [Boots ]: Effect Hit  ·  Effect RES  ·  ATK%  ·  HP%
+    Relic 5 [Hands ]: DEF%  ·  ATK%  ·  HP flat  ·  Crit Rate
+    Relic 6 [Hands ]: DEF%  ·  Break Eff  ·  Crit Rate  ·  Crit DMG
+    Relic 7 [Chest ]: HP flat  ·  Break Eff  ·  Effect RES  ·  ATK%
+    Relic 8 [Chest ]: Break Eff  ·  Crit DMG  ·  HP flat  ·  ATK%
+
+  SUBSTAT FREQUENCY THIS RUN:
+    HP flat      : 5/8 relics (63%)
+    ATK%         : 5/8 relics (63%)
+    Break Eff    : 5/8 relics (63%)
+    HP%          : 3/8 relics (38%)
+    DEF%         : 3/8 relics (38%)
+    Crit Rate    : 3/8 relics (38%)
+    Crit DMG     : 2/8 relics (25%)
+    Effect Hit   : 2/8 relics (25%)
+    Effect RES   : 2/8 relics (25%)
+    ATK flat     : 1/8 relics (13%)
+    DEF flat     : 1/8 relics (13%)
+
+====================================================================
+  HOW TO READ THIS DATA:
+
+  S3 — same ID array → same substat cluster across runs?
+       YES = ordered slot array is dominant seed variable
+
+  S4 — which character IDs score highest CR/CD/SPD % per relic?
+       High % = that ID may anchor the crit zone in the seed
+
+  S5 — does Remem path comp score differently than Harm?
+       Different % = path combination contributes to seed
+
+  S6 — does cavern change substat profile?
+       Different % per cavern = stage ID is part of seed
+====================================================================
+  END OF LOG — upload this file for analysis
+====================================================================

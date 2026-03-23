@@ -1,0 +1,176 @@
+====================================================================
+  HSR RELIC SEED SIMULATOR — DEBUG LOG v3.0
+  Svarog Tracer Research Tool
+====================================================================
+  Exported : 3/16/2026, 6:38:38 PM
+  Total runs: 3
+====================================================================
+
+[ SECTION 1 — OUTCOME DISTRIBUTION ]
+--------------------------------------------------------------------
+  one crit                    : 1 (33%)
+  mixed                       : 1 (33%)
+  spd one crit                : 1 (33%)
+
+[ SECTION 2 — GLOBAL SUBSTAT FREQUENCY (all relics, all runs) ]
+--------------------------------------------------------------------
+  Total relics logged: 21 across 3 runs
+
+  DEF flat     : █████████████░░░░░░░  (13/21 = 62%)
+  ATK%         : ██████████░░░░░░░░░░  (10/21 = 48%)
+  HP%          : ████████░░░░░░░░░░░░  (8/21 = 38%)
+  HP flat      : ███████░░░░░░░░░░░░░  (7/21 = 33%)
+  SPD          : ███████░░░░░░░░░░░░░  (7/21 = 33%)
+  Effect RES   : ███████░░░░░░░░░░░░░  (7/21 = 33%)
+  Break Eff    : ███████░░░░░░░░░░░░░  (7/21 = 33%)
+  DEF%         : ██████░░░░░░░░░░░░░░  (6/21 = 29%)
+  Crit Rate    : ██████░░░░░░░░░░░░░░  (6/21 = 29%)
+  Crit DMG     : ██████░░░░░░░░░░░░░░  (6/21 = 29%)
+  Effect Hit   : ████░░░░░░░░░░░░░░░░  (4/21 = 19%)
+  ATK flat     : ███░░░░░░░░░░░░░░░░░  (3/21 = 14%)
+
+[ SECTION 3 — SLOT ORDER ANALYSIS ]
+--------------------------------------------------------------------
+  Same 4 chars, different slot order = different ID array = different seed
+
+  Array: [1413-1306-1409-1211]  (3 run(s))
+  Order: S1:Evernight | S2:Sparkle | S3:Hyacine | S4:Bailu
+  Substat rates: DEF flat 62%  ATK% 48%  HP% 38%  HP flat 33%  SPD 33%  Effect RES 33%
+  Outcomes: one-crit, mixed, spd-one-crit
+
+[ SECTION 4 — CHARACTER CRIT CORRELATION ]
+--------------------------------------------------------------------
+  Which character IDs in the team correlate with crit/SPD drops?
+
+  Bailu            ID:1211   CR:29%   CD:29%   SPD:33%    (3 runs / 21 relics)
+  Sparkle          ID:1306   CR:29%   CD:29%   SPD:33%    (3 runs / 21 relics)
+  Hyacine          ID:1409   CR:29%   CD:29%   SPD:33%    (3 runs / 21 relics)
+  Evernight        ID:1413   CR:29%   CD:29%   SPD:33%    (3 runs / 21 relics)
+
+[ SECTION 5 — PATH COMPOSITION ANALYSIS ]
+--------------------------------------------------------------------
+  paths: Rememx2 · Harm · Abund   elems: Ice · Quantum · Wind · Lightning — 3 run(s)
+  Top: DEF flat 62%  ATK% 48%  HP% 38%  HP flat 33%  SPD 33%
+
+[ SECTION 6 — CAVERN ANALYSIS ]
+--------------------------------------------------------------------
+  Path of Uncertainty — 3 run(s)
+  Top: DEF flat 62%  ATK% 48%  HP% 38%  HP flat 33%  SPD 33%
+
+[ SECTION 7 — ALL RUNS FULL DETAIL ]
+--------------------------------------------------------------------
+
+  RUN #001  2026-03-16T15:34:09.844Z
+  ··································································
+  CAVERN     : Path of Uncertainty
+  SLOT ORDER : S1:Evernight  S2:Sparkle  S3:Hyacine  S4:Bailu
+  ID ARRAY   : [1413-1306-1409-1211]
+  PATHS      : paths: Rememx2 · Harm · Abund   elems: Ice · Quantum · Wind · Lightning
+  TIME       : 33s
+  OUTCOME    : one crit
+  AVG TOP 4  : HP% + HP flat + DEF flat + Crit Rate
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: HP%  ·  Crit DMG  ·  Effect Hit  ·  DEF flat
+    Relic 2 [Head  ]: HP%  ·  HP flat  ·  Crit Rate  ·  Break Eff
+    Relic 3 [Head  ]: HP%  ·  DEF%  ·  DEF flat  ·  Break Eff
+    Relic 4 [Head  ]: HP%  ·  Crit Rate  ·  SPD  ·  DEF flat
+    Relic 5 [Head  ]: HP flat  ·  DEF%  ·  Crit DMG  ·  ATK%
+    Relic 6 [Head  ]: HP flat  ·  ATK%  ·  HP%  ·  Effect RES
+    Relic 7 [Head  ]: HP flat  ·  Effect RES  ·  ATK flat  ·  Crit Rate
+
+  SUBSTAT FREQUENCY THIS RUN:
+    HP%          : 5/7 relics (71%)
+    HP flat      : 4/7 relics (57%)
+    DEF flat     : 3/7 relics (43%)
+    Crit Rate    : 3/7 relics (43%)
+    ATK%         : 2/7 relics (29%)
+    DEF%         : 2/7 relics (29%)
+    Crit DMG     : 2/7 relics (29%)
+    Effect RES   : 2/7 relics (29%)
+    Break Eff    : 2/7 relics (29%)
+    ATK flat     : 1/7 relics (14%)
+    SPD          : 1/7 relics (14%)
+    Effect Hit   : 1/7 relics (14%)
+
+  RUN #002  2026-03-16T15:36:34.071Z
+  ··································································
+  CAVERN     : Path of Uncertainty
+  SLOT ORDER : S1:Evernight  S2:Sparkle  S3:Hyacine  S4:Bailu
+  ID ARRAY   : [1413-1306-1409-1211]
+  PATHS      : paths: Rememx2 · Harm · Abund   elems: Ice · Quantum · Wind · Lightning
+  TIME       : 29s
+  OUTCOME    : mixed
+  AVG TOP 4  : DEF flat + ATK% + SPD + Break Eff
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: DEF flat  ·  HP%  ·  DEF%  ·  SPD
+    Relic 2 [Head  ]: DEF flat  ·  ATK%  ·  Break Eff  ·  HP%
+    Relic 3 [Head  ]: ATK%  ·  SPD  ·  ATK flat  ·  Effect Hit
+    Relic 4 [Head  ]: HP flat  ·  Break Eff  ·  ATK flat  ·  SPD
+    Relic 5 [Head  ]: DEF flat  ·  Break Eff  ·  Effect Hit  ·  Crit Rate
+    Relic 6 [Head  ]: DEF flat  ·  Effect RES  ·  HP flat  ·  ATK%
+    Relic 7 [Head  ]: DEF flat  ·  ATK%  ·  Effect RES  ·  DEF%
+
+  SUBSTAT FREQUENCY THIS RUN:
+    DEF flat     : 5/7 relics (71%)
+    ATK%         : 4/7 relics (57%)
+    SPD          : 3/7 relics (43%)
+    Break Eff    : 3/7 relics (43%)
+    HP flat      : 2/7 relics (29%)
+    ATK flat     : 2/7 relics (29%)
+    HP%          : 2/7 relics (29%)
+    DEF%         : 2/7 relics (29%)
+    Effect Hit   : 2/7 relics (29%)
+    Effect RES   : 2/7 relics (29%)
+    Crit Rate    : 1/7 relics (14%)
+
+  RUN #003  2026-03-16T15:38:33.229Z
+  ··································································
+  CAVERN     : Path of Uncertainty
+  SLOT ORDER : S1:Evernight  S2:Sparkle  S3:Hyacine  S4:Bailu
+  ID ARRAY   : [1413-1306-1409-1211]
+  PATHS      : paths: Rememx2 · Harm · Abund   elems: Ice · Quantum · Wind · Lightning
+  TIME       : 38s
+  OUTCOME    : spd one crit
+  AVG TOP 4  : DEF flat + ATK% + Crit DMG + SPD
+
+  RELICS (7 pieces):
+    Relic 1 [Head  ]: ATK%  ·  SPD  ·  Crit DMG  ·  Break Eff
+    Relic 2 [Head  ]: DEF flat  ·  HP%  ·  SPD  ·  Effect RES
+    Relic 3 [Head  ]: DEF flat  ·  Crit Rate  ·  Effect Hit  ·  DEF%
+    Relic 4 [Head  ]: DEF flat  ·  Crit DMG  ·  Effect RES  ·  ATK%
+    Relic 5 [Head  ]: DEF%  ·  Crit Rate  ·  Crit DMG  ·  ATK%
+    Relic 6 [Head  ]: DEF flat  ·  SPD  ·  Effect RES  ·  Break Eff
+    Relic 7 [Head  ]: HP flat  ·  DEF flat  ·  Crit DMG  ·  ATK%
+
+  SUBSTAT FREQUENCY THIS RUN:
+    DEF flat     : 5/7 relics (71%)
+    ATK%         : 4/7 relics (57%)
+    Crit DMG     : 4/7 relics (57%)
+    SPD          : 3/7 relics (43%)
+    Effect RES   : 3/7 relics (43%)
+    DEF%         : 2/7 relics (29%)
+    Crit Rate    : 2/7 relics (29%)
+    Break Eff    : 2/7 relics (29%)
+    HP flat      : 1/7 relics (14%)
+    HP%          : 1/7 relics (14%)
+    Effect Hit   : 1/7 relics (14%)
+
+====================================================================
+  HOW TO READ THIS DATA:
+
+  S3 — same ID array → same substat cluster across runs?
+       YES = ordered slot array is dominant seed variable
+
+  S4 — which character IDs score highest CR/CD/SPD % per relic?
+       High % = that ID may anchor the crit zone in the seed
+
+  S5 — does Remem path comp score differently than Harm?
+       Different % = path combination contributes to seed
+
+  S6 — does cavern change substat profile?
+       Different % per cavern = stage ID is part of seed
+====================================================================
+  END OF LOG — upload this file for analysis
+====================================================================
