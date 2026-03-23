@@ -299,6 +299,43 @@
       border: 1px solid var(--zzz-border);
     }
 
+    /* COLLISION FINDER */
+    .collision-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 15px;
+      padding-right: 5px;
+    }
+
+    .collision-card {
+      background: var(--zzz-grey);
+      border: 1px solid var(--zzz-border);
+      border-radius: 6px;
+      padding: 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .collision-card:hover {
+      border-color: var(--zzz-yellow);
+    }
+
+    .cc-team {
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .cc-stats {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--zzz-text-dim);
+    }
+
     ::-webkit-scrollbar {
       width: 6px;
     }
@@ -351,6 +388,7 @@
         <div class="hash-card">
           <div class="hc-label">TEAM XOR</div>
           <div class="hc-val" id="h-xor">0</div>
+          <button class="btn secondary" style="font-size:9px; padding: 2px 8px; margin-top:5px; height:auto;" onclick="findCollisionsForCurrent()">Find Collisions</button>
         </div>
         <div class="hash-card">
           <div class="hc-label">SLOT HASH</div>
@@ -360,6 +398,16 @@
       <div style="margin-top:15px; font-size:11px; color:var(--zzz-text-dim); font-family:var(--mono);">
 
       </div>
+    </div>
+
+    <!-- XOR COLLISION FINDER -->
+    <div class="panel">
+      <div class="panel-title">XOR Collision Finder</div>
+      <div class="search-row">
+        <input type="number" id="target-xor" placeholder="Target XOR Value..." style="flex:1;">
+        <button class="btn" onclick="findCollisions()">Find Collisions</button>
+      </div>
+      <div id="collision-results" class="collision-grid"></div>
     </div>
 
     <!-- DROP LOGGER -->
@@ -595,7 +643,6 @@
     }
 
     function renderDrops() {
-      // ... same as before but I need to make sure I don't break the function ...
       const el = document.getElementById('drops-list');
       el.innerHTML = '';
       drops.forEach((d, i) => {
@@ -663,6 +710,98 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+    }
+
+    function findCollisionsForCurrent() {
+      const currentXor = parseInt(document.getElementById('h-xor').textContent);
+      if (currentXor === 0) {
+        alert("Select a team first!");
+        return;
+      }
+      document.getElementById('target-xor').value = currentXor;
+      findCollisions(true);
+    }
+
+    function findCollisions(sortBySimilarity = false) {
+      const target = parseInt(document.getElementById('target-xor').value);
+      if (isNaN(target)) {
+        alert("Please enter a valid XOR value.");
+        return;
+      }
+
+      const currentSum = parseInt(document.getElementById('h-sum').textContent);
+      const currentSlot = parseInt(document.getElementById('h-slot').textContent);
+
+      const resultsEl = document.getElementById('collision-results');
+      resultsEl.innerHTML = '<div style="font-size:12px; color:var(--zzz-text-dim);">Searching 22k combinations...</div>';
+
+      setTimeout(() => {
+        let matches = [];
+        const n = AGENTS.length;
+
+        for (let i = 0; i < n; i++) {
+          for (let j = i + 1; j < n; j++) {
+            for (let k = j + 1; k < n; k++) {
+              const u1 = AGENTS[i];
+              const u2 = AGENTS[j];
+              const u3 = AGENTS[k];
+              const xor = u1.id ^ u2.id ^ u3.id;
+
+              if (xor === target) {
+                // Check if this is the exact same team
+                const isCurrent = team.every(t => t && (t.id === u1.id || t.id === u2.id || t.id === u3.id));
+                if (isCurrent) continue;
+
+                const sum = u1.id + u2.id + u3.id;
+                const slotHash = (u3.id * 3) + u1.id + u2.id;
+                
+                let diff = 0;
+                if (sortBySimilarity) {
+                  diff = Math.abs(sum - currentSum) + Math.abs(slotHash - currentSlot);
+                }
+
+                matches.push({ agents: [u1, u2, u3], sum, slotHash, diff });
+              }
+              // Increased limit slightly for sorting
+              if (matches.length >= 200) break;
+            }
+            if (matches.length >= 200) break;
+          }
+          if (matches.length >= 200) break;
+        }
+
+        if (sortBySimilarity) {
+          matches.sort((a, b) => a.diff - b.diff);
+        }
+        
+        renderCollisionResults(matches.slice(0, 50));
+      }, 50);
+    }
+
+    function renderCollisionResults(matches) {
+      const el = document.getElementById('collision-results');
+      el.innerHTML = '';
+
+      if (matches.length === 0) {
+        el.innerHTML = '<div style="font-size:12px; color:var(--zzz-text-dim);">No 3-agent combinations found for this XOR.</div>';
+        return;
+      }
+
+      matches.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'collision-card';
+        const names = m.agents.map(a => a.name).join(' + ');
+        div.innerHTML = `
+          <div class="cc-team">${names}</div>
+          <div class="cc-stats">SUM: ${m.sum} | SLOT: ${m.slotHash}</div>
+        `;
+        div.onclick = () => {
+          team = [...m.agents];
+          refresh();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        el.appendChild(div);
+      });
     }
 
 
